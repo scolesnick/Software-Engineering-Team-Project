@@ -2,6 +2,7 @@ package server;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.Database;
@@ -80,7 +81,10 @@ public class GameServer extends AbstractServer {
 	              try {
 	                    database.executeDML("insert into user values('"+createData.getUsername()+"',AES_ENCRYPT('"+createData.getPassword()+"','tanner'));");
 	                    arg1.sendToClient("valid");
-	                } catch (IOException e) {e.printStackTrace();}
+	                } catch (IOException e) {e.printStackTrace();} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 	          }
 			  
