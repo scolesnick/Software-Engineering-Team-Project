@@ -79,7 +79,7 @@ public class GameServer extends AbstractServer {
 	          if (duplicate == 0 && longpass == 0 && shortpass == 0 && mathching == 0) {
 
 	              try {
-	                    database.executeDML("insert into user values('"+createData.getUsername()+"',AES_ENCRYPT('"+createData.getPassword()+"','tanner'));");
+	                    database.executeDML("insert into user values('"+createData.getUsername()+"',AES_ENCRYPT('"+createData.getPassword()+"','key'));");
 	                    arg1.sendToClient("valid");
 	                } catch (IOException e) {e.printStackTrace();} catch (SQLException e) {
 						// TODO Auto-generated catch block
@@ -93,7 +93,7 @@ public class GameServer extends AbstractServer {
 		  else if (arg0 instanceof LoginData) {
 			  LoginData loginData = (LoginData)arg0;
 			 
-	          set = database.query("select username,AES_DECRYPT(user.password,'tanner') from user where username='"+loginData.getUsername()+"';");
+	          set = database.query("select username,AES_DECRYPT(user.password,'key') from user where username='"+loginData.getUsername()+"';");
 	          
 	          
 	          if (set.isEmpty() == false) {
