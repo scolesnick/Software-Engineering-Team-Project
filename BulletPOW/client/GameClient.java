@@ -1,10 +1,12 @@
 package client;
 
+import gameMechanics.Player;
+
 public class GameClient
 {
-//	private Player player;
-//	private LoginControl loginCtrl;
-//	private CreateAccountControl createCtrl;
+	private Player player;
+	private LoginControl loginCtrl;
+	private CreateAccountControl createCtrl;
 	private JoinGameControl joinCtrl;
 	private GameControl gameCtrl;
 	
