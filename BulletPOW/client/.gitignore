@@ -9,3 +9,5 @@
 /GameActionData.class
 /CreateAccountPanel.class
 /LoginPanel.class
+/CreateAccountControl.class
+/LoginControl.class
