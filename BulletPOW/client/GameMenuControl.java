@@ -22,7 +22,8 @@ public class GameMenuControl implements ActionListener
 	
 	public void displayJoinGamePanel()
 	{
-		
+		CardLayout cLayout = (CardLayout)container.getLayout();
+		cLayout.show(container, "4");
 	}
 	
 	public void displayLoginPanel()
@@ -33,7 +34,8 @@ public class GameMenuControl implements ActionListener
 	
 	public void displayGamePanel()
 	{
-		
+		CardLayout cLayout = (CardLayout)container.getLayout();
+		cLayout.show(container, "5");
 	}
 
 	@Override
@@ -44,6 +46,14 @@ public class GameMenuControl implements ActionListener
 		if(command == "Logout") 
 		{
 			displayLoginPanel();
+		}
+		else if(command == "Join Game")
+		{
+			displayJoinGamePanel();
+		}
+		else if(command == "Host Game")
+		{
+			displayGamePanel();
 		}
 		
 	}
