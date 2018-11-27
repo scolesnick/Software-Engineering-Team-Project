@@ -2,7 +2,7 @@ package client;
 
 import javax.swing.*;
 
-public class JoinGamePanel
+public class JoinGamePanel extends JPanel
 {
 	private JList gameLists;
 	private JButton refresh;

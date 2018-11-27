@@ -1,9 +1,8 @@
 package client;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.*;
 
-public class GamePanel
+public class GamePanel extends JPanel
 {
 	private JButton logOut;
 	private JLabel status;

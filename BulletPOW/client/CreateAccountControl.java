@@ -1,9 +1,12 @@
 package client;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class CreateAccountControl
+import javax.swing.*;
+
+public class CreateAccountControl implements ActionListener
 {
 	private JPanel container;
 	private GameClient client;
@@ -19,12 +22,32 @@ public class CreateAccountControl
 	{
 		
 	}
-	public void displayError()
+	public void displayError(String error)
 	{
-		
+		CreateAccountPanel createPanel = (CreateAccountPanel)container.getComponent(2);
+	    createPanel.setError(error);
 	}
 	public void displayLoginPanel()
 	{
+		CardLayout cLayout = (CardLayout)container.getLayout();
+		cLayout.show(container, "1");
+	}
+
+	public void createSuccess()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		String command = e.getActionCommand();
+		
+		if(command == "Back")
+		{
+			displayLoginPanel();
+		}
 		
 	}
 
