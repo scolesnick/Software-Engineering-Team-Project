@@ -65,19 +65,9 @@ public class GameGUI extends JFrame
 		this.add(container, BorderLayout.CENTER);
 
 		// Show the JFrame.
-		this.setSize(550, 350);
+		this.setSize(500, 500);
 		this.setVisible(true);
 
-	    // Show the login view in the card layout initially
-	    cardLayout.show(container, "1");
-//	    cardLayout.show(container, "5");
-	    
-	    // Add the card layout container to the JFrame
-	    this.add(container, BorderLayout.CENTER);
-	    
-	    // Show JFrame
-	    this.setSize(500, 500);
-	    this.setVisible(true);
 	}
 
 	// Main function that creates the client GUI when the program is started.

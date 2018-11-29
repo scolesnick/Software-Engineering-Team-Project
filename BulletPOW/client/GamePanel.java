@@ -6,7 +6,7 @@ import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener
+public class GamePanel extends JPanel implements ActionListener
 {
 	private static int WIDTH = 500;
 	private static int HEIGHT = 500;
@@ -40,13 +40,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		addKeyBinding(this, false, KeyEvent.VK_W, "moveUp", (evt)->{up = true;});
+		addKeyBinding(this, false, KeyEvent.VK_S, "moveDown", (evt)->{down = true;});
+		addKeyBinding(this, false, KeyEvent.VK_A, "moveLeft", (evt)->{left = true;});
+		addKeyBinding(this, false, KeyEvent.VK_D, "moveRight", (evt)->{right = true;});
+		
+		init();
 	}
+	
+	private void addKeyBinding(JComponent comp, boolean release, int keyCode, String id, ActionListener actionListener) {
+		InputMap im = comp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		im.put(KeyStroke.getKeyStroke(keyCode, 0, release), id);
+		ActionMap am = comp.getActionMap();
+		am.put(id, new AbstractAction() {			
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				actionListener.actionPerformed(e);
+			}
+		});
+	}
+	
 	public void init() {
 		timer = new Timer(delay, this);
 		timer.setActionCommand("Timer");
-		this.setFocusable(true);
-		this.requestFocus();
-		this.addKeyListener(this);
 		timer.start();
 	}
 //	public GamePanel(GameControl gc)
@@ -99,46 +117,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 	
 	public void paintComponent (Graphics page) {
 		   super.paintComponent (page);
-		   image.paintIcon (this, page, y, x);
+		   image.paintIcon (this, page, x, y);
 		}
-
-	@Override
-	public void keyPressed(KeyEvent arg0)
-	{
-		System.out.println("pressed");
-		if(arg0.getKeyCode() == KeyEvent.VK_W) {
-			up = true;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_S) {
-			down = true;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_A) {
-			left = true;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_D) {
-			right = true;
-		}		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0){
-		System.out.println("released");
-		if(arg0.getKeyCode() == KeyEvent.VK_W) {
-			up = false;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_S) {
-			down = false;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_A) {
-			left = false;
-		}
-		else if(arg0.getKeyCode() == KeyEvent.VK_D) {
-			right = false;
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0){	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -147,28 +127,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener
 		if(command == "Timer") {
 //			System.out.println("Timer ticked");
 			if(up) {
-				if(x-player_speed > 0) {
-					x -= player_speed;
-				}
-			}
-			if(down) {
-				if(x+player_speed < HEIGHT - image.getIconHeight()) {
-					x += player_speed;
-				}
-			}
-			if(left) {
 				if(y-player_speed > 0) {
 					y -= player_speed;
 				}
 			}
-			if(right) {
-				if(y+player_speed < WIDTH - image.getIconWidth()) {
+			if(down) {
+				if(y+player_speed < HEIGHT - image.getIconHeight()) {
 					y += player_speed;
 				}
 			}
+			if(left) {
+				if(x-player_speed > 0) {
+					x -= player_speed;
+				}
+			}
+			if(right) {
+				if(x+player_speed < WIDTH - image.getIconWidth()) {
+					x += player_speed;
+				}
+			}
+			up=down=left=right=false;
 			repaint();
-		}
-		
+		}		
 	}
-
 }
