@@ -1,51 +1,82 @@
 package client;
 
-import client.CreateAccountControl;
-import client.LoginControl;
 import gameMechanics.Player;
+import messageData.*;
 import ocsf.client.AbstractClient;
+import server.ServerMessage;
 
 public class GameClient extends AbstractClient
 {
-	private Player player;
-	private LoginControl loginCtrl;
-	private CreateAccountControl createCtrl;
-	private JoinGameControl joinCtrl;
-	private GameControl gameCtrl;
+  
+	private LoginControl loginController;
+	private CreateAccountControl createController;
+	private User currentUser;
+	private JoinGameControl joinController;
+	private GameControl gameController;
 	
   public GameClient()
   {
-	  super("localhost",8300);
-  }
-  
-  public void setCreateController(CreateAccountControl cc) 
-  {
-	  createCtrl = cc;
-  }
-  
-  public void setLoginController(LoginControl lc) 
-  {
-	  loginCtrl = lc;
+    super("localhost",8300);
   }
 
-  public void handleMessageFromServer(Object arg0)
-  {
-	  System.out.println("Server Message sent to Client " + (String)arg0);
-	  if (arg0.equals("true"))
-		  loginCtrl.loginSuccess();
-	  else if (arg0.equals("false"))
-		  loginCtrl.displayError("Invalid login credentials.");
-	  
-	  if (arg0.equals("valid"))
-		  createCtrl.createSuccess();
-	  else if (arg0.equals("duplicate"))
-		  createCtrl.displayError("Duplicate username. ");
-	  else if (arg0.equals("mathching"))
-		  createCtrl.displayError("Passwords don't match. ");
-	  else if (arg0.equals("longpass"))
-		  createCtrl.displayError("Password too long. ");
-	  else if (arg0.equals("shortpass"))
-		  createCtrl.displayError("Password too short. ");
-	  }
-}
+  public void setCreateController(CreateAccountControl cc) {createController = cc;}
   
+  public void setLoginController(LoginControl lc) {loginController = lc;}
+  
+  public void setJoinGameController(JoinGameControl jgc) {joinController = jgc;}
+  
+  public void setGameControl(GameControl gc) {gameController = gc;}
+  
+  public User getCurrentUser() {return currentUser;}
+
+  public void setCurrentUser(User currentUser) {this.currentUser = currentUser;}
+  
+  @Override
+  public void handleMessageFromServer(Object msg)
+  {
+    if(msg instanceof User) 
+    {
+    	setCurrentUser((User)msg);
+    	loginController.loginSuccess();
+    }
+    else if (msg instanceof ServerMessage) 
+    {
+    	switch ((ServerMessage)msg) {
+		case InvalidLogin:
+			loginController.displayError(((ServerMessage) msg).getMessage());
+			break;
+		case CreateSuccess:
+			createController.createSuccess();
+			break;
+		case ExistingAccount:
+			createController.displayError(((ServerMessage) msg).getMessage());
+			break;
+		case DatabaseError:
+			createController.displayError(((ServerMessage) msg).getMessage());
+			loginController.displayError(((ServerMessage) msg).getMessage());
+			break;
+		default:
+			System.out.println(((ServerMessage) msg).getMessage());
+			break;
+		}
+    }
+
+  }
+  
+  
+
+  
+  
+  public void connectionException (Throwable exception) 
+  {
+    //Add your code here
+  }
+  public void connectionEstablished()
+  {
+    //Add your code here
+  }
+
+
+  
+
+}

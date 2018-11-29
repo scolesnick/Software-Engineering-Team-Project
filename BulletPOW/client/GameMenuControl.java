@@ -23,19 +23,19 @@ public class GameMenuControl implements ActionListener
 	public void displayJoinGamePanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "4");
+		cLayout.show(container, "join");
 	}
 	
 	public void displayLoginPanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "1");
+		cLayout.show(container, "login");
 	}
 	
 	public void displayGamePanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "5");
+		cLayout.show(container, "game");
 	}
 
 	@Override

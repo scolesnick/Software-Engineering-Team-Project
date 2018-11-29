@@ -19,12 +19,12 @@ public class JoinGameControl implements ActionListener
 	public void displayMenuPanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "3");
+		cLayout.show(container, "menu");
 	}
 	public void displayGamePanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "5");
+		cLayout.show(container, "game");
 	}
 	
 
