@@ -29,12 +29,12 @@ public class GameControl implements ActionListener
 	public void displayLoginPanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "1");
+		cLayout.show(container, "login");
 	}
 	public void displayMenuPanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "3");
+		cLayout.show(container, "menu");
 	}
 	public void applyBuff()
 	{

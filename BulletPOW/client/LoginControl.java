@@ -1,56 +1,74 @@
 package client;
 
-import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
+
+import messageData.LoginData;
+
+import java.awt.event.*;
+import java.io.IOException;
 
 public class LoginControl implements ActionListener
 {
-	private JPanel container;
-	private GameClient client;
-	
-	public LoginControl(JPanel container, GameClient gc)
-	{
-		this.container = container;
-		this.client = gc;
-	}
+  // Private data fields for the container and game client.
+  private JPanel container;
+  private GameClient client;
+  
+  // Constructor for the login controller.
+  public LoginControl(JPanel container, GameClient client)
+  {
+    this.container = container;
+    this.client = client;
+  }
+  
+  // Handle button clicks.
+  public void actionPerformed(ActionEvent ae)
+  {
+    // Get the name of the button clicked.
+    String command = ae.getActionCommand();
 
-	public void loginSuccess()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "3");
-	}
-	
-	public void createAccount()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "2");
-	}
-	
-	public void displayError(String error)
-	{
-		LoginPanel loginPanel  =(LoginPanel)container.getComponent(0);
-		loginPanel.setError(error);	
-	}
+    // The Create button takes the user to the create account panel
+    if (command == "Create")
+    {
+      CardLayout cardLayout = (CardLayout)container.getLayout();
+      cardLayout.show(container, "create");
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent arg0)
-	{
-		 // Get the name of the button clicked.
-	    String command = arg0.getActionCommand();
-	    
-	    if (command == "Create")
-	    {
-	    	createAccount();
-	    }	    
-	    else if (command == "Submit")
-	    {
-	    	// TODO change this to check validity of user/psw before loginSuccess()
-	    	loginSuccess();
-	    }
+    // The Submit button submits the login information to the server.
+    else if (command == "Submit")
+    {
+      // Get the username and password the user entered.
+      LoginPanel loginPanel = (LoginPanel)container.getComponent(0);
+      LoginData data = new LoginData(loginPanel.getUsername(), loginPanel.getPassword());
+      
+      // Check the validity of the information locally first.
+      if (data.getUsername().equals("") || data.getPassword().equals(""))
+      {
+        displayError("You must enter a username and password.");
+        return;
+      }
 
-		
+      // Submit the login information to the server.
+      try {
+		client.sendToServer(data);
+	} catch (IOException e) {
+		e.printStackTrace();
 	}
+     
+    }
+  }
 
+  public void loginSuccess()
+  {
+	  CardLayout cardLayout = (CardLayout)container.getLayout();
+      cardLayout.show(container, "menu");
+      displayError("");
+  }
+
+  public void displayError(String error)
+  {
+    LoginPanel loginPanel = (LoginPanel)container.getComponent(0);
+    loginPanel.setError(error);
+    
+  }
 }

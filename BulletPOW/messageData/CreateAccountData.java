@@ -1,6 +1,8 @@
 package messageData;
 
-public class CreateAccountData {
+import java.io.Serializable;
+
+public class CreateAccountData implements Serializable{
 	
 	private String username;
 	private String password;
@@ -48,21 +50,6 @@ public class CreateAccountData {
 		setPassword(password);
 		setVerifyPassword(verifyPassword);
 		
-	}
-	
-	//josh - i did this validation in a differenct class
-	public void UsernameAlreadyInUse() {
-		
-		
-		
-	}
-	
-	//josh - i did this validation in a differenct class
-	public boolean IncorrectPassword() {
-		
-		
-		//simply for error purposes - this return true statement will need to be removed/displaced/replaced
-		return true;
 	}
 
 }

@@ -1,47 +1,72 @@
 package client;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 public class GameGUI extends JFrame
 {
-	private GameClient client;
-	
-	// Constructor
+
+
+	private GameClient client; 
+
+	// Constructor that creates the client GUI.
 	public GameGUI()
 	{
-		client = new GameClient();
-		this.setTitle("Game");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		// Create the card layout container.
-	    CardLayout cardLayout = new CardLayout();
-	    JPanel container = new JPanel(cardLayout);
-	    
-	    // Create the Controllers
-	    GameMenuControl gmc = new GameMenuControl(container, client);
-	    GameControl gc = new GameControl(container, client);
-	    JoinGameControl jgc = new JoinGameControl(container, client);
-	    LoginControl lc = new LoginControl(container, client);
-	    CreateAccountControl cac = new CreateAccountControl(container, client);
-	    
-	    // Create the different views
-	    JPanel view1 = new LoginPanel(lc);
-	    JPanel view2 = new CreateAccountPanel(cac);
-	    JPanel view3 = new GameMenuPanel(gmc);
-	    JPanel view4 = new JoinGamePanel(jgc);
-	    JPanel view5 = new GamePanel(gc);
 
-	    // Add the views to the card layout container
-	    container.add(view1, "1");
-	    container.add(view2, "2");
-	    container.add(view3, "3");
-	    container.add(view4, "4");
-	    container.add(view5, "5");
+		client = new GameClient();
+		try {
+			client.openConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Set the title and default close operation.
+		this.setTitle("Client");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// Create the card layout container.
+		CardLayout cardLayout = new CardLayout();
+		JPanel container = new JPanel(cardLayout);
+
+		//Create the Controllers
+		LoginControl lc = new LoginControl(container, client);
+		CreateAccountControl cc = new CreateAccountControl(container, client);
+		JoinGameControl jgc = new JoinGameControl(container, client);
+		GameMenuControl gmc = new GameMenuControl(container, client);
+		GameControl gc = new GameControl(container, client);
+		
+		client.setCreateController(cc);
+		client.setLoginController(lc);
+		client.setJoinGameController(jgc);
+		client.setGameControl(gc);
+
+		
+		// Create the views
+		JPanel login = new LoginPanel(lc);
+		JPanel create = new CreateAccountPanel(cc);
+		JPanel join_game = new JoinGamePanel(jgc);
+		JPanel game_menu = new GameMenuPanel(gmc);
+		JPanel game = new GamePanel(gc);
+
+
+		// Add the views to the card layout container.
+		container.add(login, "login");
+		container.add(create, "create");
+		container.add(join_game, "join");
+		container.add(game_menu, "menu");
+		container.add(game, "game");
+
+
+		// Show the initial view in the card layout.
+		cardLayout.show(container, "login");
+
+		// Add the card layout container to the JFrame.
+		this.add(container, BorderLayout.CENTER);
+
+		// Show the JFrame.
+		this.setSize(550, 350);
+		this.setVisible(true);
 
 	    // Show the login view in the card layout initially
 	    cardLayout.show(container, "1");
@@ -55,9 +80,9 @@ public class GameGUI extends JFrame
 	    this.setVisible(true);
 	}
 
+	// Main function that creates the client GUI when the program is started.
 	public static void main(String[] args)
 	{
 		new GameGUI();
 	}
-
 }
