@@ -45,12 +45,13 @@ public class GameGUI extends JFrame
 
 	    // Show the login view in the card layout initially
 	    cardLayout.show(container, "1");
+//	    cardLayout.show(container, "5");
 	    
 	    // Add the card layout container to the JFrame
 	    this.add(container, BorderLayout.CENTER);
 	    
 	    // Show JFrame
-	    this.setSize(750, 500);
+	    this.setSize(500, 500);
 	    this.setVisible(true);
 	}
 
