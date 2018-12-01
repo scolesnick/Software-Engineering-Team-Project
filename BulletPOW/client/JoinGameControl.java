@@ -41,9 +41,9 @@ public class JoinGameControl implements ActionListener
 		}
 		else if(command == "Join")
 		{
-			String updateStatus = "Join pushed";
+			String joinpush = "Join pushed";
 			try {
-				client.sendToServer(updateStatus);
+				client.sendToServer(joinpush);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
