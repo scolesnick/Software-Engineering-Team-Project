@@ -144,23 +144,9 @@ private void hostButtonPushed(ConnectionToClient client)
 	  	clientList.add(newClient);
 	  	
 	  	sendToAllClients(newClient.getName());
-	  	
+	  	//fdfd
 	  	client.setInfo("ID", newClient.getName());
-	  		
-	  		
-	  		try {
-	  			ConnectionToClient opponent = findOpponent(client);
 	  			
-	  			opponent.sendToClient("You have a new opponent!");
-				client.sendToClient("You have a new opponent!");
-				
-				System.out.println("[INFO] Client " + client.toString() + " has the opponent "+opponent.toString());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	  		
-	  	
 	  
 }
 
@@ -170,7 +156,7 @@ private void joinButtonPushed(ConnectionToClient client)
 			ConnectionToClient opponent = findOpponent(client);
 			
 			opponent.sendToClient("You have a new opponent!");
-		client.sendToClient("You have a new opponent!");
+		    client.sendToClient("You have a new opponent!");
 		
 		System.out.println("[INFO] Client " + client.toString() + " has the opponent "+opponent.toString());
 	} catch (IOException e) {
