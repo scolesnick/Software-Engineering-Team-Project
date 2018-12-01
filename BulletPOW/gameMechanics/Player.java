@@ -9,6 +9,11 @@ public class Player {
 	private int speed;
 	private ArrayList<Bullets> bullets;
 
+	public void Player() {
+		
+		
+		
+	}
 	
 	public void updateStats() {
 		
