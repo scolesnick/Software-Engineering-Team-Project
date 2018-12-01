@@ -17,7 +17,7 @@ public class GameControl implements ActionListener
 	{
 		this.client = client;
 		this.container = container;
-		this.gameMap = ((GamePanel) container.getComponent(4)).getGameMap();
+//		this.gameMap = ((GamePanel) container.getComponent(4)).getGameMap();
 	}
 	
 	public void checkCollision()
