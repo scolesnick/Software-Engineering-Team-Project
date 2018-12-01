@@ -23,7 +23,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private Timer timer;
 	
 	//keybinding flags
-	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, bulletShot = false;
+	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, bulletShot = false, mouseClicked = false;
 	
 	//mouse click stuff
 	private int mousex, mousey;
@@ -35,7 +35,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	double angle, xVel, yVel;
 	
 	public GameMap() {
-
+		
 		//creates a buffered image from the jpg stored above the package
 		try {dude = ImageIO.read(new File("guy1.jpg"));} catch (IOException ex) {}
 		
@@ -46,10 +46,12 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		addMouseListener(this);
 		
+		
 		//instantiates timer for refresh purposes - changing 60 to smaller number means slower, choppier movement
 		timer = new Timer (1000/60, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	shoot(mousex, mousey);
                 move();
                 repaint();
             }
@@ -157,11 +159,20 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	
 	public void shoot(int mousex, int mousey) {
 			
-		angle = Math.atan2(mousex - x, mousey - y);
-		xVel = (bulletV) * Math.cos(angle);
-		yVel = (bulletV) * Math.sin(angle);
-		
+		if (bulletShot) {
+			angle = Math.atan2(mousex - x, mousey - y);
+			xVel = (bulletV) * Math.cos(angle);
+			yVel = (bulletV) * Math.sin(angle);
+			bullet.x += xVel;
+			bullet.y += yVel;
+		}
 	}
+	
+//	public void update() {
+//		bullet.x += xVel;
+//		bullet.y += yVel;
+//		mouseClicked = false;
+//	}
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -172,8 +183,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
         //draws a bullet if one is shot
         if (bulletShot) {
         	g.setColor(Color.BLACK);
-        	g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
-        	bulletShot = false;
+        	g.drawRect(bullet.x,bullet.y,bullet.width,bullet.height);
         }
 	}
 	
@@ -187,32 +197,25 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
+		bulletShot = true;
+		bx = x+18;
+		by = y+15;
+		bullet = new Rectangle(bx, by, 3, 5);
 		mousex = e.getX();
 		mousey = e.getY();
+		System.out.println(mousex + "   " + mousey);
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent arg0) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent arg0) {}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent arg0) {}
 }
