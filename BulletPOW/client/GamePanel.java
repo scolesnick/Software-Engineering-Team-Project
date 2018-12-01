@@ -40,6 +40,8 @@ public class GamePanel extends JPanel
 		bot = new JPanel(new BorderLayout());
 		logOut = new JButton("Logout");
 		exitGame = new JButton("Exit Game");
+		logOut.addActionListener(gc);
+		exitGame.addActionListener(gc);
 		bot.add(logOut, BorderLayout.EAST);
 		bot.add(exitGame, BorderLayout.WEST);
 		bot.setPreferredSize(new Dimension(WIDTH,  40));

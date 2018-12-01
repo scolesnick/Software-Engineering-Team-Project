@@ -1,23 +1,19 @@
 package server;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import client.ClientNode;
-import client.GameControl;
-import client.GameMenuControl;
-import client.JoinGameControl;
 import database.Database;
+import messageData.CreateAccountData;
 import messageData.LoginData;
 import messageData.User;
-import messageData.CreateAccountData;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class GameServer extends AbstractServer {
 	
+
 	
 	
 	ClientNode newClient;
@@ -35,25 +31,32 @@ public class GameServer extends AbstractServer {
 	}
 	
 	private ArrayList<ClientNode> clientList;
+
+	private ConnectionToClient player1 = null;
+	private ConnectionToClient player2 = null;
+	private ArrayList<gameMechanics.GameInfo> gamelist;
+
 	private Database database;
 	
-	public GameServer()
-	  {
-	    this(8300);
-	  }
-	  
-	  public GameServer(int port)
-	  {
-	    super(port);
+	public GameServer() {
+		
+		this(8300);
+		
+	}
+	
+	public GameServer(int port) {
+		
+		super(port);
 	    this.setTimeout(500);
 	    database = new Database();
+
 	    clientList = new ArrayList<ClientNode>();
 	    
 	  }
 	  
 	  protected void handleMessageFromClient(Object msg, ConnectionToClient client)
 	  {
-	    
+
 		  try 
 		  {
 			  if(msg instanceof LoginData) 
@@ -97,7 +100,7 @@ public class GameServer extends AbstractServer {
 		  System.out.println("Message from Client" + msg.toString() + " " + client.toString() + "\n");   
 	  }
 		
-	
+
 
 protected void listeningException(Throwable exception) 
 {
@@ -226,6 +229,13 @@ private ConnectionToClient findOpponent( ConnectionToClient client) throws NullP
 	
 	return null;
 }
+
+
+	protected void clientDisconnected(ConnectionToClient client) {
+		
+		
+		
+	}
 
 }
 

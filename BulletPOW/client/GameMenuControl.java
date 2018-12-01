@@ -62,26 +62,7 @@ public class GameMenuControl implements ActionListener
 		}
 		else if(command == "Host Game")
 		{
-			/**
-			String hostName = "";
-			try {
-			     InetAddress addr = InetAddress.getLocalHost();
-			     hostName = addr.getHostName();
-			    } catch (UnknownHostException b) {b.printStackTrace();}
-			client.setHost(hostName);
-			client.setPort(8300);
-			String hostInfo = client.getHost() +"          " + client.getPort();
-			System.out.println(hostInfo);
 			
-			
-			try {
-				client.sendToServer(hostInfo);
-				client.openConnection();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			*/
 			String hostPushed = "Host button pushed";
 			try {
 				client.sendToServer(hostPushed);
