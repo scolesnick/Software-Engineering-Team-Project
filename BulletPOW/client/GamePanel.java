@@ -62,4 +62,7 @@ public class GamePanel extends JPanel
 		this.add(right, BorderLayout.EAST);
 		this.add(bot, BorderLayout.SOUTH);
 	}	
+	public JPanel getGameMap() {
+		return game;
+	}
 }

@@ -8,6 +8,7 @@ import java.awt.event.*;
 public class GameControl implements ActionListener
 {
 	private JPanel container;
+	private JPanel gameMap;
 	private GameClient client;
 	private JLabel status;
 //	private GameInfo game;
@@ -16,6 +17,7 @@ public class GameControl implements ActionListener
 	{
 		this.client = client;
 		this.container = container;
+		this.gameMap = ((GamePanel) container.getComponent(4)).getGameMap();
 	}
 	
 	public void checkCollision()
@@ -54,6 +56,8 @@ public class GameControl implements ActionListener
 		{
 			displayMenuPanel();
 		}
+		
+		
 		
 	}
 
