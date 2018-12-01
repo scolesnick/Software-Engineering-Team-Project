@@ -70,10 +70,20 @@ public class GameServer extends AbstractServer {
 			  {
 				  client.sendToClient(database.createAccount((CreateAccountData)msg));
 			  }
-			  else if (msg instanceof String)
+			  
+			  else
 			  {
-				  hostButtonPushed(client);
-				  sendToAllClients(msg);
+			    	String message = (String) msg;
+			    
+			    if (message.startsWith("Host"))
+			    {
+			    	hostButtonPushed(client);
+			    }
+			    else if(message.startsWith("Join"))
+			    {
+			    	joinButtonPushed(client);
+			    }
+				  
 			  }
 			 
 		  }
@@ -149,6 +159,21 @@ private void hostButtonPushed(ConnectionToClient client)
 	  		
 	  	
 	  
+}
+
+private void joinButtonPushed(ConnectionToClient client)
+{
+	try {
+			ConnectionToClient opponent = findOpponent(client);
+			
+			opponent.sendToClient("You have a new opponent!");
+		client.sendToClient("You have a new opponent!");
+		
+		System.out.println("[INFO] Client " + client.toString() + " has the opponent "+opponent.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 private ConnectionToClient findOpponent( ConnectionToClient client) throws NullPointerException
 {

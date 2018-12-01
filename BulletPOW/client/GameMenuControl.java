@@ -82,7 +82,7 @@ public class GameMenuControl implements ActionListener
 				e1.printStackTrace();
 			}
 			*/
-			String hostPushed = "host button pushed";
+			String hostPushed = "Host button pushed";
 			try {
 				client.sendToServer(hostPushed);
 			} catch (IOException e1) {
