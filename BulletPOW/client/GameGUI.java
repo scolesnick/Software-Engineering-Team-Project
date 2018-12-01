@@ -9,13 +9,15 @@ public class GameGUI extends JFrame
 
 
 	private GameClient client; 
+	final public static int DEFAULT_PORT = 8300;
 
 	// Constructor that creates the client GUI.
-	public GameGUI()
+	public GameGUI(String host, int port)
 	{
+		
 
-		client = new GameClient();
 		try {
+			client = new GameClient(host, port);
 			client.openConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,6 +75,31 @@ public class GameGUI extends JFrame
 	// Main function that creates the client GUI when the program is started.
 	public static void main(String[] args)
 	{
-		new GameGUI();
+		{
+		    String host = "";
+		    int portNumber = 0; 
+		    
+		    
+		    try
+		    {
+		      host = args[0];
+		    }
+		    catch(ArrayIndexOutOfBoundsException e)
+		    {
+		      host = "localhost";
+		    }
+		    
+		    try
+		    {
+		      portNumber = Integer.parseInt(args[1]);
+		    }
+		    catch(ArrayIndexOutOfBoundsException e)
+		    {
+		      portNumber = DEFAULT_PORT;
+		    }
+		    
+		    
+		    new GameGUI(host,portNumber);
 	}
+}
 }

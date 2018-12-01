@@ -18,8 +18,12 @@ public class GameMap extends JPanel implements ActionListener{
 	private Timer timer;
 	private boolean dPressed, aPressed, sPressed, wPressed;
 	
+	
+
+	
 	public GameMap() {
-		
+				
+
 		//creates a buffered image from the jpg stored above the package
 		try {dude = ImageIO.read(new File("guy1.jpg"));} catch (IOException ex) {}
 		
@@ -151,3 +155,4 @@ public class GameMap extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 }
+	

@@ -1,5 +1,7 @@
 package client;
 
+import java.io.IOException;
+
 import gameMechanics.Player;
 import messageData.*;
 import ocsf.client.AbstractClient;
@@ -13,10 +15,13 @@ public class GameClient extends AbstractClient
 	private User currentUser;
 	private JoinGameControl joinController;
 	private GameControl gameController;
+	String loginID;
 	
-  public GameClient()
+  public GameClient(String host, int port) throws IOException
   {
-    super("localhost",8300);
+    super(host, port);
+    openConnection();
+    
   }
 
   public void setCreateController(CreateAccountControl cc) {createController = cc;}
@@ -58,10 +63,27 @@ public class GameClient extends AbstractClient
 		default:
 			System.out.println(((ServerMessage) msg).getMessage());
 			break;
+			
+			
 		}
     }
+    
+    else 
+    {
+    	String message = (String) msg;
+    
+    if (message.startsWith("Player"))
+    {
+    	joinController.updateGameList((String) msg);
+    }
+  
+    }
+    	
+    }
+   
+    
 
-  }
+  
   
   
 
