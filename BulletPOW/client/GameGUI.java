@@ -7,7 +7,6 @@ import java.io.IOException;
 public class GameGUI extends JFrame
 {
 
-
 	private GameClient client; 
 	final public static int DEFAULT_PORT = 8300;
 
