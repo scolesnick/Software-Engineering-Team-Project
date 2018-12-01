@@ -7,7 +7,6 @@ import java.io.IOException;
 public class GameGUI extends JFrame
 {
 
-
 	private GameClient client; 
 
 	// Constructor that creates the client GUI.

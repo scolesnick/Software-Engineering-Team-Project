@@ -4,19 +4,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class GameMap extends JPanel implements ActionListener{
+public class GameMap extends JPanel implements ActionListener,MouseListener{
 	
+	//dude image stuff
 	private BufferedImage dude;
 	private Image dudeImage;
 	private int x=0, y=0, player_speed=5;
+
+	//timer creation
 	private Timer timer;
-	private boolean dPressed, aPressed, sPressed, wPressed;
+	
+	//keybinding flags
+	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, bulletShot = false;
+	
+	//mouse click stuff
+	private int mousex, mousey;
+	
+	//bullet stuff
+	Rectangle bullet;
+	private int bx=0, by=0, bspeed=10;
+	double bulletV = 2.0;
+	double angle, xVel, yVel;
 	
 	public GameMap() {
 		
@@ -27,6 +43,8 @@ public class GameMap extends JPanel implements ActionListener{
 		
 		//creates an Image based on the BufferedImage that initially loads the file
 		dudeImage = dude.getScaledInstance(dude.getWidth(), dude.getHeight(), Image.SCALE_SMOOTH);
+		
+		addMouseListener(this);
 		
 		//instantiates timer for refresh purposes - changing 60 to smaller number means slower, choppier movement
 		timer = new Timer (1000/60, new ActionListener() {
@@ -43,7 +61,7 @@ public class GameMap extends JPanel implements ActionListener{
 	
 	public void addKeyBindings() {
 		
-		//add possible keystrokes
+		//keystrokes for movement
 		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "dPressed");
 		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "dReleased");
@@ -137,12 +155,27 @@ public class GameMap extends JPanel implements ActionListener{
 		}
 	}
 	
+	public void shoot(int mousex, int mousey) {
+			
+		angle = Math.atan2(mousex - x, mousey - y);
+		xVel = (bulletV) * Math.cos(angle);
+		yVel = (bulletV) * Math.sin(angle);
+		
+	}
+	
 	@Override
     protected void paintComponent(Graphics g) {
 		//paints the player image on the panel
         super.paintComponent(g);
-        g.drawImage(dudeImage, x, y, this);         
-    }
+        g.drawImage(dudeImage, x, y, this);
+        
+        //draws a bullet if one is shot
+        if (bulletShot) {
+        	g.setColor(Color.BLACK);
+        	g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        	bulletShot = false;
+        }
+	}
 	
 	public int getPanelWidth() {
 		return this.getWidth();
@@ -150,4 +183,36 @@ public class GameMap extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		
+		mousex = e.getX();
+		mousey = e.getY();
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
