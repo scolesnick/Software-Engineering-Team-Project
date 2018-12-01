@@ -48,7 +48,7 @@ public class GameControl implements ActionListener
 	{
 		String command = arg0.getActionCommand();
 		
-		if(command == "Log Out")
+		if(command == "Logout")
 		{
 			displayLoginPanel();
 		}
