@@ -144,7 +144,7 @@ private void hostButtonPushed(ConnectionToClient client)
 	  	clientList.add(newClient);
 	  	
 	  	sendToAllClients(newClient.getName());
-	  	
+	  	//fdfd
 	  	client.setInfo("ID", newClient.getName());
 	  			
 	  
