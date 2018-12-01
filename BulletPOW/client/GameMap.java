@@ -26,12 +26,12 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, bulletShot = false, mouseClicked = false;
 	
 	//mouse click stuff
-	private int mousex, mousey;
+	private int mousex, mousey, tempx, tempy;
 	
 	//bullet stuff
 	Rectangle bullet;
 	private int bx=0, by=0, bspeed=10;
-	double bulletV = 2.0;
+	double bulletV = 8.0;
 	double angle, xVel, yVel;
 	
 	public GameMap() {
@@ -52,6 +52,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
             @Override
             public void actionPerformed(ActionEvent e) {
             	shoot(mousex, mousey);
+    			removeBullet();
                 move();
                 repaint();
             }
@@ -160,7 +161,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	public void shoot(int mousex, int mousey) {
 			
 		if (bulletShot) {
-			angle = Math.atan2(mousex - x, mousey - y);
+			angle = Math.atan2(mousey - tempy,mousex - tempx);
 			xVel = (bulletV) * Math.cos(angle);
 			yVel = (bulletV) * Math.sin(angle);
 			bullet.x += xVel;
@@ -168,11 +169,17 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		}
 	}
 	
-//	public void update() {
-//		bullet.x += xVel;
-//		bullet.y += yVel;
-//		mouseClicked = false;
-//	}
+	public void removeBullet() {
+		
+		if (bulletShot) {
+			if (bullet.x <= 10 || bullet.x >= 720) {
+				bullet = new Rectangle(0,0,0,0);
+			}
+			if (bullet.y <= 10 || bullet.y >= 690) {
+				bullet = new Rectangle(0,0,0,0);
+			}
+		}
+	}
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -182,8 +189,9 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
         
         //draws a bullet if one is shot
         if (bulletShot) {
-        	g.setColor(Color.BLACK);
+        	g.setColor(Color.YELLOW);
         	g.drawRect(bullet.x,bullet.y,bullet.width,bullet.height);
+        	g.fillRect(bullet.x,bullet.y,bullet.width,bullet.height);
         }
 	}
 	
@@ -200,10 +208,11 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		bulletShot = true;
 		bx = x+18;
 		by = y+15;
-		bullet = new Rectangle(bx, by, 3, 5);
+		bullet = new Rectangle(bx, by, 8, 8);
 		mousex = e.getX();
 		mousey = e.getY();
-		System.out.println(mousex + "   " + mousey);
+		tempx = bx;
+		tempy = by;
 		
 	}
 
