@@ -19,6 +19,11 @@ public class GamePanel extends JPanel
 	private JPanel left;
 	private JPanel right;
 	
+	public void updateStatus(String playerC)
+	  {
+	    status.setText(playerC);
+	  }
+	
 	// Constructor
 	public GamePanel(GameControl gc) {
 		this.setLayout(new BorderLayout());
@@ -61,5 +66,8 @@ public class GamePanel extends JPanel
 		this.add(left, BorderLayout.WEST);
 		this.add(right, BorderLayout.EAST);
 		this.add(bot, BorderLayout.SOUTH);
+		
+		logOut.addActionListener(gc);
+		exitGame.addActionListener(gc);
 	}	
 }

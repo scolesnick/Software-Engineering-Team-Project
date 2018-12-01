@@ -2,6 +2,8 @@ package client;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class JoinGameControl implements ActionListener
@@ -39,9 +41,24 @@ public class JoinGameControl implements ActionListener
 		}
 		else if(command == "Join")
 		{
+			String updateStatus = "Player Connected";
+			try {
+				client.sendToServer(updateStatus);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			displayGamePanel();
 		}
 		
 	}
+	
+	public void updateGameList(String msg)
+	  {
+	    JoinGamePanel joinPanel = (JoinGamePanel)container.getComponent(2);
+	    joinPanel.updateGameList(msg);
+	    
+	  }
 	
 }

@@ -21,6 +21,9 @@ public class GameMap extends JPanel implements ActionListener
 	private boolean left = false;
 	private boolean right = false;
 	
+	
+
+	
 	public GameMap() {
 //		image = new ImageIcon(this.getClass().getResource("/guy1.jgp"));
 		try
@@ -31,6 +34,8 @@ public class GameMap extends JPanel implements ActionListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 		
 		addKeyBinding(this, false, KeyEvent.VK_W, "moveUp", (evt)->{up = true;});
 		addKeyBinding(this, false, KeyEvent.VK_S, "moveDown", (evt)->{down = true;});

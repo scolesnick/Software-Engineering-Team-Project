@@ -7,13 +7,28 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 public class JoinGamePanel extends JPanel{
+	
+	JList<String> contactArea;
+	DefaultListModel listModel;
+
+
+	
+	public void updateGameList(String hostInfo)
+	  {
+		
+	    listModel.addElement(hostInfo);
+	  }
 
 	  public JoinGamePanel(JoinGameControl jgc) 
-	  {        
+	  {      
+		    listModel = new DefaultListModel<String>();
+		   // listModel.addElement("item 1");
+
+		   // listModel.addElement("item 2");
 		    //North Panel
 		    JPanel north = new JPanel();
 		    JLabel contactLabel = new JLabel("Games", JLabel.CENTER);
@@ -22,8 +37,8 @@ public class JoinGamePanel extends JPanel{
 		    //Center Contacts Panel
 		    //Caleb: JList data needs to be generated from the server, possibly done at 'Join Game' event in GameMenuController
 		    JPanel center = new JPanel();
-		    String[] data = {"Game 1", "Game 2", "Game 3", "Game 4"}; 	
-		    JList<String> contactArea = new JList<String>(data);
+		    
+		    JList<String> contactArea = new JList(listModel);
 		    center.add(contactArea);
 		    
 		    //South Buttons Panel
