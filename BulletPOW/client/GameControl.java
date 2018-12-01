@@ -42,9 +42,9 @@ public class GameControl implements ActionListener
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0)
+	public void actionPerformed(ActionEvent e)
 	{
-		String command = arg0.getActionCommand();
+		String command = e.getActionCommand();
 		
 		if(command == "Logout")
 		{
@@ -56,5 +56,12 @@ public class GameControl implements ActionListener
 		}
 		
 	}
+	
+	public void updateStatus(String updateStatus)
+	  {
+	    GamePanel gamePanel = (GamePanel)container.getComponent(4);
+	    gamePanel.updateStatus(updateStatus);
+	    
+	  }
 
 }

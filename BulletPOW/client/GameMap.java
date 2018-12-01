@@ -34,8 +34,12 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	double bulletV = 2.0;
 	double angle, xVel, yVel;
 	
+	
+
+	
 	public GameMap() {
-		
+				
+
 		//creates a buffered image from the jpg stored above the package
 		try {dude = ImageIO.read(new File("guy1.jpg"));} catch (IOException ex) {}
 		
@@ -183,6 +187,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {}
+<<<<<<< HEAD
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -216,3 +221,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 	}
 }
+=======
+}
+	
+>>>>>>> branch 'master' of https://github.com/numbscole/Software-Engineering-Team-Project.git

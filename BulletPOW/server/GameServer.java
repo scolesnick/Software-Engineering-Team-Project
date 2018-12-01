@@ -3,27 +3,40 @@ package server;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import client.ClientNode;
 import database.Database;
+import messageData.CreateAccountData;
 import messageData.LoginData;
 import messageData.User;
-import messageData.CreateAccountData;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class GameServer extends AbstractServer {
 	
+
+	
+	
+	ClientNode newClient;
+	
+	public static void main(String args[]) 
+	{
+		GameServer server = new GameServer();
+		try {
+			server.listen();
+			System.out.println("Server started on port 8300");
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
+	private ArrayList<ClientNode> clientList;
+
 	private ConnectionToClient player1 = null;
 	private ConnectionToClient player2 = null;
 	private ArrayList<gameMechanics.GameInfo> gamelist;
+
 	private Database database;
-	
-	public static void main(String args[]) {
-		
-		GameServer server = new GameServer();
-		
-		try {server.listen();System.out.println("Server started on port 8300");} catch (IOException e) {e.printStackTrace();System.exit(0);}
-		
-	}
 	
 	public GameServer() {
 		
@@ -36,85 +49,193 @@ public class GameServer extends AbstractServer {
 		super(port);
 	    this.setTimeout(500);
 	    database = new Database();
+
+	    clientList = new ArrayList<ClientNode>();
 	    
-	}
-	
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+	  }
+	  
+	  protected void handleMessageFromClient(Object msg, ConnectionToClient client)
+	  {
+
+		  try 
+		  {
+			  if(msg instanceof LoginData) 
+			  {
+				  LoginData loginData = (LoginData) msg;
+				  
+				  User user = database.getUser((LoginData)msg);
+				  if(user != null)
+					  client.sendToClient(user);
+				  else 
+					  client.sendToClient(ServerMessage.InvalidLogin);  
+			  }
+			  else if (msg instanceof CreateAccountData) 
+			  {
+				  client.sendToClient(database.createAccount((CreateAccountData)msg));
+			  }
+			  
+			  else
+			  {
+			    	String message = (String) msg;
+			    
+			    if (message.startsWith("Host"))
+			    {
+			    	hostButtonPushed(client);
+			    }
+			    else if(message.startsWith("Join"))
+			    {
+			    	joinButtonPushed(client);
+			    }
+				  
+			  }
+			 
+		  }
+		  catch(IOException e) 
+		  {
+			  e.printStackTrace();
+			  System.out.println(e.getMessage());
+			  
+		  }
+		  
+		  System.out.println("Message from Client" + msg.toString() + " " + client.toString() + "\n");   
+	  }
 		
-		try {
-			if(msg instanceof LoginData) {
+
+
+protected void listeningException(Throwable exception) 
+{
+  //Display info about the exception
+  System.out.println("Listening Exception:" + exception);
+  exception.printStackTrace();
+  System.out.println(exception.getMessage());
+}
+
+protected void serverStarted() 
+{
+  System.out.println("Server Started");
+}
+
+protected void serverStopped() 
+{
+  System.out.println("Server Stopped");
+  
+}
+
+protected void serverClosed() 
+{
+  System.out.println("Server and clients are closed - Press Listen to Restart");
+  
+}
+
+
+protected void clientConnected(ConnectionToClient client) 
+{
+  newClient = new ClientNode(client.getId());
+  System.out.println("Client Connected");
+  
+}
+private void hostButtonPushed(ConnectionToClient client)
+{
+	
+	System.out.println(client.getId());
+	System.out.println(newClient.getName());
+	
+	// Adding client to the client list
+	  	clientList.add(newClient);
+	  	
+	  	sendToAllClients(newClient.getName());
+	  	
+	  	client.setInfo("ID", newClient.getName());
+	  		
+	  		
+	  		try {
+	  			ConnectionToClient opponent = findOpponent(client);
+	  			
+	  			opponent.sendToClient("You have a new opponent!");
+				client.sendToClient("You have a new opponent!");
 				
-				LoginData loginData = (LoginData) msg;
-				User user = database.getUser((LoginData)msg);
-				
-				if(user != null)
-					client.sendToClient(user);
-				else
-					client.sendToClient(ServerMessage.InvalidLogin);  
-				
+				System.out.println("[INFO] Client " + client.toString() + " has the opponent "+opponent.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else if (msg instanceof CreateAccountData) {
-				client.sendToClient(database.createAccount((CreateAccountData)msg));
-				
-			}
+	  		
+	  	
+	  
+}
+
+private void joinButtonPushed(ConnectionToClient client)
+{
+	try {
+			ConnectionToClient opponent = findOpponent(client);
 			
-		} catch(IOException e){e.printStackTrace();System.out.println(e.getMessage());}
+			opponent.sendToClient("You have a new opponent!");
+		client.sendToClient("You have a new opponent!");
 		
-		System.out.println("Message from Client" + msg.toString() + client.toString() + "\n");
-		
+		System.out.println("[INFO] Client " + client.toString() + " has the opponent "+opponent.toString());
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
+}
+private ConnectionToClient findOpponent( ConnectionToClient client) throws NullPointerException
+{
+	Long opponentId = -1L; // Default value for a long
 	
-	protected void listeningException(Throwable exception) {
-		
-		//Display info about the exception
-		System.out.println("Listening Exception:" + exception);
-		exception.printStackTrace();
-		System.out.println(exception.getMessage());
-		
-	}
+	ClientNode clientNode = new ClientNode(-999L);;
 	
-	protected void serverStarted() {
+	for( ClientNode node : clientList )
+	{// Iterate through all clients connected in the list
 		
-		System.out.println("Server Started");
-		
-	}
-	
-	protected void serverStopped() {
-		
-		System.out.println("Server Stopped");
-		
-	}
-	
-	protected void serverClosed() {
-		
-		System.out.println("Server and clients are closed - Press Listen to Restart");
-		
-	}
-	
-	protected void clientConnected(ConnectionToClient client) {
-		
-		if ( (player1 != null) && (player2 != null) ) {
-			
-			System.out.println("Game is full.");
-			try {client.close();}catch(IOException e) {System.out.println("error closing 3rd client");}
-			
-			return;
-			
+		// If listClient different from clientConnected and that client has himself as opponent
+		if( node.getPlayerID() == client.getId())
+		{
+			clientNode = node; // find client node
+	    	break;
 		}
-		client.getInfo(null);
-		if (player1 == null)
-			player1 = client;
-		else
-			player2 = client;
-		
-		System.out.println(player1 + "  :  " + player2);
-		
 	}
+	if (clientNode.getOpponentID() == clientNode.getPlayerID())
+	{
+  	for( ClientNode possibleOpponentNode : clientList )
+  	{// Iterate through all clients connected in the list
+  		
+  		// If listClient different from clientConnected and that client has himself as opponent
+  		if( possibleOpponentNode.getPlayerID() != clientNode.getPlayerID() && possibleOpponentNode.getPlayerID() == possibleOpponentNode.getOpponentID())
+  		{
+  			// Sets the client's opponent's opponent as himself
+  			opponentId = possibleOpponentNode.getPlayerID();
+  			possibleOpponentNode.setOpponentID(client.getId());
+  			clientNode.setOpponentID(opponentId);
+  	    	break;
+  		}
+  	}
+	}
+	else
+		opponentId = clientNode.getOpponentID();
 	
+	// Iterate through the connectiontoclients array
+	if(opponentId != -1L)
+	{
+		for(Thread clientThread : getClientConnections())// list of connections
+		{
+			if(clientThread.getId() == opponentId)
+			{
+				return (ConnectionToClient) clientThread;
+			}
+		}
+	}
+	else
+		throw new NullPointerException("Client has no opponent.");
+	
+	return null;
+}
+
+
 	protected void clientDisconnected(ConnectionToClient client) {
 		
 		
 		
 	}
+
 }
 
