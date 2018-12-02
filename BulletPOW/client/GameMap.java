@@ -32,6 +32,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private Timer timer;
 	
 	//keybinding flags
+	private boolean t = true, f = false;
 	private boolean dPressed, aPressed, sPressed, wPressed;
 	private boolean bulletShot = false, otherBulletShot = false;
 	
@@ -73,78 +74,51 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
         });
         timer.start();
 		
-		addKeyBindings();
+		addAllKeyBindings();
     }
 	
-	public void addKeyBindings() {
+	//reusable method for adding keybinds in a dynamic way
+	public void addOneKeyBinding(JComponent comp, int keyCode, boolean bool, String id, ActionListener AL) {
 		
-		//keystrokes for movement
 		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "dPressed");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "dReleased");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "aPressed");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "aReleased");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, false), "sPressed");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "sReleased");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "wPressed");
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "wReleased");
+		ActionMap am = this.getActionMap();
 		
-		//add keystroke actions
-		ActionMap ap = this.getActionMap();
-		//for button d
-		ap.put("dPressed", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dPressed = true;
-			}
-		});
-		ap.put("dReleased", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dPressed = false;
-			}
-		});
+		im.put(KeyStroke.getKeyStroke(keyCode, 0, bool), id);
 		
-		//for button w
-		ap.put("wPressed", new AbstractAction() {
+		am.put(id, new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				wPressed = true;
+				AL.actionPerformed(e);
 			}
 		});
-		ap.put("wReleased", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				wPressed = false;
-			}
-		});
+	}
+	
+	//this is where you use addOneKeyBinding to create your keybindings
+	public void addAllKeyBindings() {
 		
-		//for button a
-		ap.put("aPressed", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				aPressed = true;
-			}
+		addOneKeyBinding(this, KeyEvent.VK_W, f, "wPressed", (evt) -> {
+			wPressed = true;
 		});
-		ap.put("aReleased", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				aPressed = false;
-			}
+		addOneKeyBinding(this, KeyEvent.VK_W, t, "wReleased", (evt) -> {
+			wPressed = false;
 		});
-		
-		//for button s
-		ap.put("sPressed", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sPressed = true;
-			}
+		addOneKeyBinding(this, KeyEvent.VK_A, f, "aPressed", (evt) -> {
+			aPressed = true;
 		});
-		ap.put("sReleased", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sPressed = false;
-			}
+		addOneKeyBinding(this, KeyEvent.VK_A, t, "aReleased", (evt) -> {
+			aPressed = false;
+		});
+		addOneKeyBinding(this, KeyEvent.VK_S, f, "sPressed", (evt) -> {
+			sPressed = true;
+		});
+		addOneKeyBinding(this, KeyEvent.VK_S, t, "sReleased", (evt) -> {
+			sPressed = false;
+		});
+		addOneKeyBinding(this, KeyEvent.VK_D, f, "dPressed", (evt) -> {
+			dPressed = true;
+		});
+		addOneKeyBinding(this, KeyEvent.VK_D, t, "dReleased", (evt) -> {
+			dPressed = false;
 		});
 	}
 	
@@ -172,6 +146,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		}
 	}
 	
+	//is called upon in the timer to constantly be checking and updating the x,y coords of bullets
 	public void shoot(int mousex, int mousey)
 	{		
 		if (bulletShot)
@@ -187,6 +162,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		} 
 	}
 	
+	//if a bullet collides with another object or the edges of the panel, it is removed here
 	public void removeBullet() {
 		
 		if (bulletShot) {
@@ -222,6 +198,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 	}
 	
+	//this is called in the timer by repaint() to constantly be repainting the panel when a change occurs
 	@Override
     protected void paintComponent(Graphics g) {
 		//paints the player image on the panel
@@ -244,6 +221,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 
+	//whenever you click your mouse, this is what begins the bullet shooting rabbit hole of methods
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
