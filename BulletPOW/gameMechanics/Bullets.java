@@ -83,8 +83,6 @@ public class Bullets implements Serializable
 	{
 		box.x += xVel;
 		box.y += yVel;
-//		x += xVel;
-//		y += yVel;
 	}
 	public Bullets() {};
 

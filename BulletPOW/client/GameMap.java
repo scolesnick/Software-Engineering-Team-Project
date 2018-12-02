@@ -256,7 +256,6 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		mousex = e.getX();
 		mousey = e.getY();
-//		System.out.println(mousex + "   " + mousey);
 		
 	}
 
