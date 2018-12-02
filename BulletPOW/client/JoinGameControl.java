@@ -3,19 +3,24 @@ package client;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.*;
+
+import messageData.JoinGameData;
 
 public class JoinGameControl implements ActionListener
 {
 	private JPanel container;
 	private GameClient client;
+	private JoinGamePanel panel;
 	
 	// Constructor
 	public JoinGameControl(JPanel container, GameClient client)
 	{
 		this.container = container;
 		this.client = client;
+		//JoinGamePanel panel = (JoinGamePanel)container.getComponent(2);
 	}
 	
 	public void displayMenuPanel()
@@ -41,9 +46,9 @@ public class JoinGameControl implements ActionListener
 		}
 		else if(command == "Join")
 		{
-			String joinpush = "Join pushed";
+			JoinGamePanel panel = (JoinGamePanel)container.getComponent(2);
 			try {
-				client.sendToServer(joinpush);
+				client.sendToServer(new JoinGameData(panel.getSelectedValue()) );
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -54,10 +59,10 @@ public class JoinGameControl implements ActionListener
 		
 	}
 	
-	public void updateGameList(String msg)
+	public void updateGameList(ArrayList<String> gameList)
 	  {
 	    JoinGamePanel joinPanel = (JoinGamePanel)container.getComponent(2);
-	    joinPanel.updateGameList(msg);
+	    joinPanel.updateGameList(gameList);
 	    
 	  }
 	
