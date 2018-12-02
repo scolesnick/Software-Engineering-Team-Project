@@ -27,6 +27,10 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	private Player opponent;
 	private Bullets my_bullet;
 	private Bullets opponent_bullet;
+	
+	private Buffs aBuff;
+	private boolean buffActive = false;
+	long timeSinceBuff, timeLastBuff = 0, time;
 
 	public void setPlayer(Player player)
 	{
@@ -86,8 +90,8 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		opponent = new Player();
 		my_bullet = new Bullets();
 		opponent_bullet = new Bullets();
-		System.out.println("instantiated bullets");
-
+		aBuff = new Buffs();
+		
 
 		// creates an Image based on the BufferedImage that initially loads the file
 		dudeImage = dude.getScaledInstance(dude.getWidth(), dude.getHeight(), Image.SCALE_SMOOTH);
@@ -111,7 +115,18 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 				me.updateHealth(opponent_bullet.checkCollision(me.getX(), me.getY()));
 
 				// Send info to server
+				time = System.nanoTime();
+				timeSinceBuff = (time - timeLastBuff) * 1000000000;
+				
+				if(timeSinceBuff > 5)
+				{
+					aBuff.createBuff();
+					buffActive = true;
+				}
+				
 				gc.update(me, my_bullet);
+				move();
+				useBuff();
 				repaint();
 			}
 		});
@@ -205,6 +220,21 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 				me.setY(me.getY() - me.getSpeed());
 			}
 		}
+	}	
+	public void useBuff()
+	{
+		if(buffActive)
+		{
+			if (Math.abs(aBuff.getX() - me.getX()) < 20 && Math.abs(aBuff.getY() - me.getY()) < 15)
+			{
+				aBuff.useBuff(me);
+			}
+			
+			/*if (Math.abs(aBuff.getX() - opponent.getX()) < 20 && Math.abs(aBuff.getY() - opponent.getY()) < 15)
+			{
+				aBuff.useBuff(opponent);
+			}*/
+		}
 	}
 
 	// this is called in the timer by repaint() to constantly be repainting the
@@ -225,6 +255,14 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 			g.setColor(Color.YELLOW);
 			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
 			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+		}
+		
+		if (buffActive)
+		{
+			Rectangle buff = aBuff.getBox();
+			g.setColor(Color.RED);
+			g.drawRect(buff.x, buff.y, buff.width, buff.height);
+			g.fillRect(buff.x, buff.y, buff.width, buff.height);
 		}
 	}
 

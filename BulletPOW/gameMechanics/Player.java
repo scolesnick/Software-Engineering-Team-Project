@@ -7,6 +7,7 @@ public class Player implements Serializable{
 	
 	private int health = 5;
 	private int speed = 5;
+	private int damage = 1;
 	private int x = 0, y = 0;
 	//private ArrayList<Bullets> bullets;
 
@@ -48,6 +49,16 @@ public class Player implements Serializable{
 	public int getSpeed()
 	{
 		return speed;
+	}
+	
+	public int getDamage()
+	{
+		return damage;
+	}
+	
+	public void setDamage(int d)
+	{
+		damage = d;
 	}
 	
 	/*public ArrayList<Bullets> getBullets()
