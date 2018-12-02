@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Player implements Serializable{
 	
-	private messageData.LoginData data;
 	private int health = 5;
 	private int speed = 5;
 	private int x = 0, y = 0;

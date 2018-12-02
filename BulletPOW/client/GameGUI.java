@@ -6,14 +6,12 @@ import java.io.IOException;
 
 public class GameGUI extends JFrame
 {
-
 	private GameClient client;
 	final public static int DEFAULT_PORT = 8300;
 
 	// Constructor that creates the client GUI.
 	public GameGUI(String host, int port)
 	{
-
 		try
 		{
 			client = new GameClient(host, port);
@@ -69,7 +67,6 @@ public class GameGUI extends JFrame
 		this.setSize(800, 800);
 		this.setVisible(true);
 		this.setResizable(false);
-
 	}
 
 	// Main function that creates the client GUI when the program is started.
@@ -82,18 +79,12 @@ public class GameGUI extends JFrame
 			try
 			{
 				host = args[0];
-			} catch (ArrayIndexOutOfBoundsException e)
-			{
-				host = "localhost";
-			}
+			} catch (ArrayIndexOutOfBoundsException e){host = "localhost";}
 
 			try
 			{
 				portNumber = Integer.parseInt(args[1]);
-			} catch (ArrayIndexOutOfBoundsException e)
-			{
-				portNumber = DEFAULT_PORT;
-			}
+			} catch (ArrayIndexOutOfBoundsException e){portNumber = DEFAULT_PORT;}
 
 			new GameGUI(host, portNumber);
 		}

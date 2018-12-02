@@ -4,9 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.*;
-
 import messageData.JoinGameData;
 import server.ServerMessage;
 
@@ -33,28 +31,24 @@ public class JoinGameControl implements ActionListener
 			if (command == "Back")
 			{
 				client.displayGameMenuPanel();
-			} else if (command == "Refresh")
+			} 
+			else if (command == "Refresh")
 			{
 				client.sendToServer(ServerMessage.GameListUpdate);
 
-			} else if (command == "Join")
+			} 
+			else if (command == "Join")
 			{
 				JoinGamePanel panel = (JoinGamePanel) container.getComponent(2);
-
 				client.sendToServer(new JoinGameData(panel.getSelectedValue()));
 			}
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
+		} catch (IOException e){e.printStackTrace();}
 	}
 
 	public void updateGameList(ArrayList<String> gameList)
 	{
 		JoinGamePanel joinPanel = (JoinGamePanel) container.getComponent(2);
 		joinPanel.updateGameList(gameList);
-
 	}
 
 	public void displayJoinGamePanel()
@@ -65,11 +59,6 @@ public class JoinGameControl implements ActionListener
 		try
 		{
 			client.sendToServer(ServerMessage.GameListUpdate);
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
+		} catch (IOException e){e.printStackTrace();}
 	}
-
 }

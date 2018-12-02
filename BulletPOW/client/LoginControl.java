@@ -2,9 +2,7 @@ package client;
 
 import java.awt.*;
 import javax.swing.*;
-
 import messageData.LoginData;
-
 import java.awt.event.*;
 import java.io.IOException;
 
@@ -51,11 +49,7 @@ public class LoginControl implements ActionListener
 			try
 			{
 				client.sendToServer(data);
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-
+			} catch (IOException e){e.printStackTrace();}
 		}
 	}
 
@@ -69,7 +63,6 @@ public class LoginControl implements ActionListener
 	{
 		LoginPanel loginPanel = (LoginPanel) container.getComponent(0);
 		loginPanel.setError(error);
-
 	}
 
 	public void displayLoginPanel()

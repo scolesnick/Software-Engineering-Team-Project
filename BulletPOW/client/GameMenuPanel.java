@@ -37,5 +37,4 @@ public class GameMenuPanel extends JPanel
 		grid.add(menuPanel);
 		this.add(grid);
 	}
-
 }

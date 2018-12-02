@@ -10,7 +10,8 @@ public class GameInfo {
 	private Bullets guestBullets;
 	private Bullets hostBullets;
 	
-	public GameInfo(String gameName, Long hostID) {
+	public GameInfo(String gameName, Long hostID) 
+	{
 		this.hostID = hostID;
 		this.gameName = gameName;
 
@@ -22,19 +23,23 @@ public class GameInfo {
 		guestID = null;
 	}
 
-	public Bullets getGuestBullets() {
+	public Bullets getGuestBullets() 
+	{
 		return guestBullets;
 	}
 
-	public void setGuestBullets(Bullets guestBullets) {
+	public void setGuestBullets(Bullets guestBullets) 
+	{
 		this.guestBullets = guestBullets;
 	}
 
-	public Bullets getHostBullets() {
+	public Bullets getHostBullets() 
+	{
 		return hostBullets;
 	}
 
-	public void setHostBullets(Bullets hostBullets) {
+	public void setHostBullets(Bullets hostBullets) 
+	{
 		this.hostBullets = hostBullets;
 	}
 	
@@ -48,36 +53,43 @@ public class GameInfo {
 		this.gameName = gameName;
 	}
 	
-	public Player getGuest() {
+	public Player getGuest() 
+	{
 		return guest;
 	}
 
-	public void setGuest(Player guest) {
+	public void setGuest(Player guest) 
+	{
 		this.guest = guest;
 	}
 
-	public Player getHost() {
+	public Player getHost() 
+	{
 		return host;
 	}
 
-	public void setHost(Player host) {
+	public void setHost(Player host) 
+	{
 		this.host = host;
 	}
 
-	public Long getGuestID() {
+	public Long getGuestID() 
+	{
 		return guestID;
 	}
 
-	public void setGuestID(Long guestID) {
+	public void setGuestID(Long guestID) 
+	{
 		this.guestID = guestID;
 	}
 
-	public Long getHostID() {
+	public Long getHostID() 
+	{
 		return hostID;
 	}
 
-	public void setHostID(Long hostID) {
+	public void setHostID(Long hostID) 
+	{
 		this.hostID = hostID;
 	}
-
 }

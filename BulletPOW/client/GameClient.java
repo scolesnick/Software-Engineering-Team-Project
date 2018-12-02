@@ -1,15 +1,12 @@
 package client;
 
 import java.io.IOException;
-
-import gameMechanics.Player;
 import messageData.*;
 import ocsf.client.AbstractClient;
 import server.ServerMessage;
 
 public class GameClient extends AbstractClient
 {
-
 	private LoginControl loginController;
 	private CreateAccountControl createController;
 	private User currentUser;
@@ -22,7 +19,6 @@ public class GameClient extends AbstractClient
 	{
 		super(host, port);
 		openConnection();
-
 	}
 
 	public void displayLoginPanel()
@@ -118,7 +114,8 @@ public class GameClient extends AbstractClient
 		else if (msg instanceof GameActionData)
 		{
 			gameController.updateEnemy((GameActionData) msg);
-		} else if (msg instanceof ServerMessage)
+		} 
+		else if (msg instanceof ServerMessage)
 		{
 			switch ((ServerMessage) msg)
 			{
@@ -138,10 +135,8 @@ public class GameClient extends AbstractClient
 			default:
 				System.out.println(((ServerMessage) msg).getMessage());
 				break;
-
 			}
 		}
-
 	}
 
 	@Override
@@ -151,5 +146,4 @@ public class GameClient extends AbstractClient
 		super.connectionException(exception);
 		System.exit(0);
 	}
-
 }

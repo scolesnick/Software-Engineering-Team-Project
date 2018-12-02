@@ -4,14 +4,11 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-
 import javax.swing.JPanel;
-
 import messageData.CreateAccountData;
 
 public class CreateAccountControl implements ActionListener
 {
-
 	// Private data fields for the container and game client.
 	private JPanel container;
 	private GameClient client;
@@ -49,48 +46,42 @@ public class CreateAccountControl implements ActionListener
 			if (username.length() <= 0)
 			{
 				displayError("Please enter a username");
-			} else if (password.length() < 6)
+			} 
+			else if (password.length() < 6)
 			{
 				displayError("Password needs to be at least 6 characters");
-			} else if (!(password.equals(password2)))
+			} 
+			else if (!(password.equals(password2)))
 			{
 				displayError("Passwords do not match.");
-
-			} else
+			} 
+			else
 			{
 				CreateAccountData data = new CreateAccountData(username, password, password2);
 
 				try
 				{
 					client.sendToServer(data);
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				} catch (IOException e){e.printStackTrace();}
 			}
-
 		}
 	}
 
 	// After the creation is successful, go back to initial panel
 	public void createSuccess()
 	{
-
 		client.displayLoginPanel();
-
 	}
 
 	public void displayError(String error)
 	{
 		CreateAccountPanel panel = (CreateAccountPanel) container.getComponent(1);
 		panel.setError(error);
-
 	}
 
 	public void displayCreateAccountPanel()
 	{
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "create");
-
 	}
 }

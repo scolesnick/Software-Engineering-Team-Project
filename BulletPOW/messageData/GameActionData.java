@@ -1,6 +1,5 @@
 package messageData;
 
-import java.awt.Event;
 import java.io.Serializable;
 
 import gameMechanics.*;
@@ -17,20 +16,23 @@ public class GameActionData implements Serializable{
 		this.bullet = bullet;
 	}
 
-	public Player getPlayer() {
+	public Player getPlayer() 
+	{
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(Player player) 
+	{
 		this.player = player;
 	}
 
-	public Bullets getBullet() {
+	public Bullets getBullet() 
+	{
 		return bullet;
 	}
 
-	public void setBullet(Bullets bullet) {
+	public void setBullet(Bullets bullet) 
+	{
 		this.bullet = bullet;
 	}
-
 }

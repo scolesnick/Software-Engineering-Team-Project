@@ -3,12 +3,10 @@ package client;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-
 import javax.swing.*;
 
 public class JoinGamePanel extends JPanel
 {
-
 	private JList<String> gameArea;
 	private DefaultListModel<String> listModel;
 
@@ -69,6 +67,5 @@ public class JoinGamePanel extends JPanel
 		this.add(north, BorderLayout.NORTH);
 		this.add(gameArea, BorderLayout.CENTER);
 		this.add(south, BorderLayout.SOUTH);
-
 	}
 }

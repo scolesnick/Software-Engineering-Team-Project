@@ -9,32 +9,29 @@ import messageData.*;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-public class GameServer extends AbstractServer {
-
+public class GameServer extends AbstractServer 
+{
 	private ArrayList<GameInfo> gameList;
-
 	private Database database;
 
-	public GameServer() {
-
+	public GameServer() 
+	{
 		this(8300);
-
 	}
 
-	public GameServer(int port) {
-
+	public GameServer(int port)
+	{
 		super(port);
 		this.setTimeout(500);
 		database = new Database();
-
 		gameList = new ArrayList<GameInfo>();
-
 	}
 
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+	protected void handleMessageFromClient(Object msg, ConnectionToClient client) 
+	{
 		try {
-			if (msg instanceof LoginData) {
+			if (msg instanceof LoginData) 
+			{
 				LoginData loginData = (LoginData) msg;
 
 				User user = database.getUser((LoginData) msg);
@@ -43,7 +40,8 @@ public class GameServer extends AbstractServer {
 				else
 					client.sendToClient(ServerMessage.InvalidLogin);
 			} 
-			else if (msg instanceof CreateAccountData) {
+			else if (msg instanceof CreateAccountData) 
+			{
 				client.sendToClient(database.createAccount((CreateAccountData) msg));
 			}
 			else if(msg instanceof JoinGameData) 
@@ -63,6 +61,7 @@ public class GameServer extends AbstractServer {
 			else if (msg instanceof GameActionData) 
 			{
 				GameInfo game = findGame(client);
+				
 				if(game != null && game.getHostID() == client.getId()) 
 				{
 					game.setHost(((GameActionData) msg).getPlayer());
@@ -73,7 +72,6 @@ public class GameServer extends AbstractServer {
 					game.setGuest(((GameActionData) msg).getPlayer());
 					game.setGuestBullets(((GameActionData) msg).getBullet());
 				}
-				
 			}
 			else if(msg instanceof ServerMessage) 
 			{
@@ -100,40 +98,39 @@ public class GameServer extends AbstractServer {
 					break;
 				}
 			}
-
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
-
 		}
-		
 	}
 
-	protected void listeningException(Throwable exception) {
+	protected void listeningException(Throwable exception) 
+	{
 		// Display info about the exception
 		System.out.println("Listening Exception:" + exception);
 		exception.printStackTrace();
 		System.out.println(exception.getMessage());
 	}
 
-	protected void serverStarted() {
+	protected void serverStarted() 
+	{
 		System.out.println("Server Started");
 	}
 
-	protected void serverStopped() {
+	protected void serverStopped() 
+	{
 		System.out.println("Server Stopped");
-
 	}
 
-	protected void serverClosed() {
+	protected void serverClosed() 
+	{
 		System.out.println("Server and clients are closed - Press Listen to Restart");
-
 	}
 
-	protected void clientConnected(ConnectionToClient client) {
+	protected void clientConnected(ConnectionToClient client) 
+	{
 		System.out.println("Client Connected");
-
 	}
 	
 	private GameInfo getGame(String name) 
@@ -145,7 +142,6 @@ public class GameServer extends AbstractServer {
 				return game;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -156,20 +152,20 @@ public class GameServer extends AbstractServer {
 			if(game.getHostID() == client.getId()) {return game;}
 			else if(game.getGuest() != null && game.getGuestID() == client.getId()) {return game;}
 		}
-		
 		return null;
 	}
 
 
-	public static void main(String args[]) {
+	public static void main(String args[]) 
+	{
 		GameServer server = new GameServer();
 		try {
 			server.listen();
 			System.out.println("Server started on port 8300");
-		} catch (IOException e) {
+		} catch (IOException e) 
+		{
 			e.printStackTrace();
 			System.exit(0);
 		}
-
 	}
 }

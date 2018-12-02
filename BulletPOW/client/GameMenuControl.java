@@ -4,15 +4,8 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import ocsf.server.ConnectionToClient;
-import server.GameServer;
 import server.ServerMessage;
 
 public class GameMenuControl implements ActionListener
@@ -26,7 +19,6 @@ public class GameMenuControl implements ActionListener
 	{
 		this.client = gc;
 		this.container = container;
-
 	}
 
 	@Override
@@ -37,29 +29,25 @@ public class GameMenuControl implements ActionListener
 		if (command == "Logout")
 		{
 			client.displayLoginPanel();
-		} else if (command == "Join Game")
+		} 
+		else if (command == "Join Game")
 		{
 			client.displayJoinGamePanel();
-		} else if (command == "Host Game")
+		} 
+		else if (command == "Host Game")
 		{
-
 			try
 			{
 				client.sendToServer(ServerMessage.HostGame);
-			} catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
+			} catch (IOException e1){e1.printStackTrace();}
+			
 			client.displayGamePanel();
 		}
-
 	}
 
 	public void displayGameMenuPanel()
 	{
 		CardLayout cLayout = (CardLayout) container.getLayout();
 		cLayout.show(container, "menu");
-
 	}
-
 }

@@ -2,7 +2,6 @@ package client;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,7 +10,6 @@ import javax.swing.JTextField;
 
 public class CreateAccountPanel extends JPanel
 {
-
 	// Private data fields for the important GUI components.
 	private JTextField usernameField;
 	private JPasswordField passwordField;
@@ -90,5 +88,4 @@ public class CreateAccountPanel extends JPanel
 		grid.add(buttonPanel);
 		this.add(grid);
 	}
-
 }

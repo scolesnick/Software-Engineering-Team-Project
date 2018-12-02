@@ -2,12 +2,11 @@ package messageData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import gameMechanics.GameInfo;
 import server.ServerMessage;
 
-public class JoinGameData implements Serializable{
-
+public class JoinGameData implements Serializable
+{
 	String gameName;
 	GameActionData gameData;
 	ServerMessage messageType;
@@ -43,36 +42,43 @@ public class JoinGameData implements Serializable{
 		this.gameName = null;
 	}
 
-	public ServerMessage getMessageType() {
+	public ServerMessage getMessageType() 
+	{
 		return messageType;
 	}
 
-	public void setMessageType(ServerMessage messageType) {
+	public void setMessageType(ServerMessage messageType) 
+	{
 		this.messageType = messageType;
 	}
 
-	public ArrayList<String> getGameList() {
+	public ArrayList<String> getGameList() 
+	{
 		return gameList;
 	}
 
-	public void setGameList(ArrayList<String> gameList) {
+	public void setGameList(ArrayList<String> gameList) 
+	{
 		this.gameList = gameList;
 	}
 
-	public String getGameName() {
+	public String getGameName() 
+	{
 		return gameName;
 	}
 
-	public void setGameName(String gameName) {
+	public void setGameName(String gameName) 
+	{
 		this.gameName = gameName;
 	}
 
-	public GameActionData getGameData() {
+	public GameActionData getGameData() 
+	{
 		return gameData;
 	}
 
-	public void setGameData(GameActionData gameData) {
+	public void setGameData(GameActionData gameData) 
+	{
 		this.gameData = gameData;
 	}
-	
 }

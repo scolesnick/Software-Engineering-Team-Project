@@ -11,12 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import gameMechanics.*;
 
 public class GameMap extends JPanel implements ActionListener, MouseListener
 {
-
 	// dude image stuff
 	private BufferedImage dude;
 	private Image dudeImage;
@@ -75,7 +73,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 
 	public GameMap(GameControl gc)
 	{
-
 		// creates a buffered image from the jpg stored above the package
 		try
 		{
@@ -104,7 +101,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
 				// Send info to server
 				gc.update(me, my_bullet);
 
@@ -123,7 +119,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	// reusable method for adding keybinds in a dynamic way
 	public void addOneKeyBinding(JComponent comp, int keyCode, boolean bool, String id, ActionListener AL)
 	{
-
 		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap am = this.getActionMap();
 
@@ -142,7 +137,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	// this is where you use addOneKeyBinding to create your keybindings
 	public void addAllKeyBindings()
 	{
-
 		addOneKeyBinding(this, KeyEvent.VK_W, f, "wPressed", (evt) ->
 		{
 			wPressed = true;
@@ -231,7 +225,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	// removed here
 	public void removeBullet()
 	{
-
 		if (bulletShot)
 		{
 			if (my_bullet.getX() <= 10 || my_bullet.getX() >= 720)
@@ -242,7 +235,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 			{
 				my_bullet.resetBox();
 			}
-
 			if (Math.abs(my_bullet.getX() - opponent.getX()) < 20 && Math.abs(my_bullet.getY() - opponent.getY()) < 15)
 			{
 				opponent.updateHealth(-my_bullet.getDamage());
@@ -260,14 +252,12 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 			{
 				opponent_bullet.resetBox();
 			}
-
 			if (Math.abs(opponent_bullet.getX() - me.getX()) < 20 && Math.abs(opponent_bullet.getY() - me.getY()) < 15)
 			{
 				me.updateHealth(-opponent_bullet.getDamage());
 				opponent_bullet.resetBox();
 			}
 		}
-
 	}
 
 	// this is called in the timer by repaint() to constantly be repainting the
@@ -295,20 +285,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		return this.getWidth();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
 	// whenever you click your mouse, this is what begins the bullet shooting rabbit
 	// hole of methods
 	@Override
@@ -319,13 +295,23 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		my_bullet.setX(me.getX() + 18);
 		my_bullet.setY(me.getY() + 15);
 		my_bullet.setBox();
-
+		
 		mousex = e.getX();
 		mousey = e.getY();
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e){}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
-	}
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0){}
 }

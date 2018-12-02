@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-
 import messageData.*;
 import server.ServerMessage;
 
@@ -17,7 +16,6 @@ public class Database
   
   public Database()
   {
-	  
 	  try {
 		  FileInputStream inp = new FileInputStream("database/db.properties");
 		  Properties prop = new Properties();
@@ -30,7 +28,6 @@ public class Database
 		  conn = DriverManager.getConnection(url, user, password);
 		  
 		} catch (IOException e1) {} catch (SQLException e) {e.printStackTrace();}
-	  
   }
   
 	public User getUser(LoginData data) 
@@ -40,21 +37,20 @@ public class Database
 		String statement = String.format("select username, cast(aes_decrypt(password, '%s') as char(40)) from users where username='%s' and password=aes_encrypt('%s', '%s')", this.key, data.getUsername(), data.getPassword(), this.key);
 
 		rows = this.query(statement);
-		if(rows.size() < 1) {return null;}
+		if(rows.size() < 1) 
+		{
+			return null;
+		}
 		else 
 		{
 			String tokens[] = rows.get(0).split(",");
 			return new User(tokens[0], tokens[1]);
 		}
-
-		
-		
 	}
 	
 	public ServerMessage createAccount(CreateAccountData data) 
 	{
 		//insert into uuser values (username, aes_encrypt(password, key))
-		
 		String statement = String.format("insert into users values ('%s', aes_encrypt('%s', '%s'))", data.getUsername(), data.getPassword(), this.key);
 		
 		try
@@ -68,23 +64,18 @@ public class Database
 			else
 				return ServerMessage.DatabaseError;
 		}
-		
-		
 	}
   
   public ArrayList<String> query(String query)
   {
-
 	  ArrayList<String> resultSet = new ArrayList<>();
 	  try {
-		  
 		  Statement stmt = conn.createStatement();
 		  ResultSet rs = stmt.executeQuery(query);
 		  ResultSetMetaData rmd = rs.getMetaData();
 		  
-		  
-		  while(rs.next()) {
-			  
+		  while(rs.next()) 
+		  {
 		    	//make empty string to append to
 		        String row = "";
 		        
@@ -103,14 +94,11 @@ public class Database
 	  } catch (SQLException e) {e.printStackTrace();}
 	  
 	  return resultSet;
-	  
   }
-  
-  public void executeDML(String dml) throws SQLException {
-	  
+
+  public void executeDML(String dml) throws SQLException 
+  {
       Statement stmt = conn.createStatement();
       stmt.execute(dml);
-      
   }
-  
 }
