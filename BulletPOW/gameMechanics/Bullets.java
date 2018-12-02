@@ -10,19 +10,31 @@ public class Bullets implements Serializable
 	private int y;
 	private double angle, xVel=0, yVel=0;
 	
-	private Rectangle box = new Rectangle(0,0,0,0);
+	private Rectangle box;// = new Rectangle(0,0,0,0);
 	private int bullet_speed=10;
 	private int b_width = 8, b_height = 8;
+	private boolean flying = false;
 	
+	public void setFly(boolean f)
+	{
+		flying = f;
+	}
+	public boolean getFly()
+	{
+		return flying;
+	}
 	public void setBox() 
 	{
 		box = new Rectangle(x,y,b_width,b_height);
 	}
 	public void resetBox() 
 	{
-		box = new Rectangle(0,0,0,0);
+//		box = new Rectangle(0,0,0,0);
+		System.out.println("box reset");
+		box = null;
 		x = y = 0;
 		xVel = yVel = 0;
+		flying = false;
 	}
 	public Rectangle getBox() 
 	{
@@ -86,7 +98,33 @@ public class Bullets implements Serializable
 	{
 		box.x += xVel;
 		box.y += yVel;
+		System.out.println("bullet moved to: "+box.x+", "+box.y);
+		checkBounds(10, 10, 720, 690);
 	}
 	
+	private void checkBounds(int xMin, int yMin, int xMax, int yMax)
+	{
+		if (box.x <= xMin || box.x >= xMax)
+		{
+			System.out.println("bounds");
+			resetBox();
+		}
+		else if (box.y <= yMin || box.x >= yMax)
+		{
+			System.out.println("bounds");
+			resetBox();
+		}
+	}
+	public int checkCollision(int opponentX, int opponentY)
+	{
+		if(box != null)
+			if (Math.abs(box.x - opponentX) < 20 && Math.abs(box.y - opponentY) < 15)
+			{
+				System.out.println("collision");
+				resetBox();
+				return -damage;
+			}
+		return 0;
+	}
 	public Bullets() {};
 }
