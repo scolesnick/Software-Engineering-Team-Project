@@ -20,46 +20,46 @@ public class GameMenuControl implements ActionListener
 	private JPanel container;
 	private JLabel status;
 	private GameClient client;
-	
-	
+
 	// Constructor
 	public GameMenuControl(JPanel container, GameClient gc)
 	{
 		this.client = gc;
 		this.container = container;
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
-		
-		if(command == "Logout") 
+
+		if (command == "Logout")
 		{
 			client.displayLoginPanel();
-		}
-		else if(command == "Join Game")
+		} else if (command == "Join Game")
 		{
 			client.displayJoinGamePanel();
-		}
-		else if(command == "Host Game")
+		} else if (command == "Host Game")
 		{
-			
-			try {
+
+			try
+			{
 				client.sendToServer(ServerMessage.HostGame);
-			} catch (IOException e1) {
+			} catch (IOException e1)
+			{
 				e1.printStackTrace();
 			}
-			client.displayGameMenuPanel();
+			client.displayGamePanel();
 		}
-		
+
 	}
 
-	public void displayGameMenuPanel() {
-		CardLayout cLayout = (CardLayout)container.getLayout();
+	public void displayGameMenuPanel()
+	{
+		CardLayout cLayout = (CardLayout) container.getLayout();
 		cLayout.show(container, "menu");
-		
+
 	}
 
 }

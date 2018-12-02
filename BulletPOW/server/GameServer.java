@@ -50,8 +50,9 @@ public class GameServer extends AbstractServer {
 			{
 				GameInfo game = getGame(((JoinGameData) msg).getGameName());
 				
-				if(game.getGuestID() != null) 
+				if(game.getGuestID() == null) 
 				{
+					game.setGuestID(client.getId());
 					client.sendToClient(new JoinGameData(new GameActionData(game.getHost(), game.getHostBullets())));
 				}
 				else 
@@ -59,10 +60,26 @@ public class GameServer extends AbstractServer {
 					client.sendToClient(ServerMessage.GameAlreadyInPlay);
 				}
 			}
+			else if (msg instanceof GameActionData) 
+			{
+				GameInfo game = findGame(client);
+				if(game != null && game.getHostID() == client.getId()) 
+				{
+					game.setHost(((GameActionData) msg).getPlayer());
+					game.setHostBullets(((GameActionData) msg).getBullet());
+				}
+				else if (game != null && game.getGuestID() == client.getId()) 
+				{
+					game.setGuest(((GameActionData) msg).getPlayer());
+					game.setGuestBullets(((GameActionData) msg).getBullet());
+				}
+				
+			}
 			else if(msg instanceof ServerMessage) 
 			{
 				switch ((ServerMessage)msg) {
 				case GameListUpdate:
+					client.sendToClient(new JoinGameData(gameList));
 					break;
 				case GameUpdate:
 					GameInfo game = findGame(client);
@@ -136,10 +153,8 @@ public class GameServer extends AbstractServer {
 	{
 		for(GameInfo game : gameList) 
 		{
-			if(game.getGuestID().equals(client.getId()) || game.getHostID().equals(client.getId())) 
-			{
-				return game;
-			}
+			if(game.getHostID() == client.getId()) {return game;}
+			else if(game.getGuest() != null && game.getGuestID() == client.getId()) {return game;}
 		}
 		
 		return null;

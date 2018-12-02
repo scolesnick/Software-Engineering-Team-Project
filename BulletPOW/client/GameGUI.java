@@ -7,22 +7,23 @@ import java.io.IOException;
 public class GameGUI extends JFrame
 {
 
-	private GameClient client; 
+	private GameClient client;
 	final public static int DEFAULT_PORT = 8300;
 
 	// Constructor that creates the client GUI.
 	public GameGUI(String host, int port)
 	{
-		
 
-		try {
+		try
+		{
 			client = new GameClient(host, port);
 			client.openConnection();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 			System.exit(0);
 		}
-		
+
 		// Set the title and default close operation.
 		this.setTitle("Client");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,27 +32,25 @@ public class GameGUI extends JFrame
 		CardLayout cardLayout = new CardLayout();
 		JPanel container = new JPanel(cardLayout);
 
-		//Create the Controllers
+		// Create the Controllers
 		LoginControl lc = new LoginControl(container, client);
 		CreateAccountControl cc = new CreateAccountControl(container, client);
 		JoinGameControl jgc = new JoinGameControl(container, client);
 		GameMenuControl gmc = new GameMenuControl(container, client);
 		GameControl gc = new GameControl(container, client);
-		
+
 		client.setCreateController(cc);
 		client.setLoginController(lc);
 		client.setJoinGameController(jgc);
 		client.setGameMenuController(gmc);
 		client.setGameControl(gc);
 
-		
 		// Create the views
 		JPanel login = new LoginPanel(lc);
 		JPanel create = new CreateAccountPanel(cc);
 		JPanel join_game = new JoinGamePanel(jgc);
 		JPanel game_menu = new GameMenuPanel(gmc);
 		JPanel game = new GamePanel(gc);
-
 
 		// Add the views to the card layout container.
 		container.add(login, "login");
@@ -60,7 +59,6 @@ public class GameGUI extends JFrame
 		container.add(game_menu, "menu");
 		container.add(game, "game");
 
-
 		// Show the initial view in the card layout.
 		cardLayout.show(container, "login");
 
@@ -68,8 +66,9 @@ public class GameGUI extends JFrame
 		this.add(container, BorderLayout.CENTER);
 
 		// Show the JFrame.
-		this.setSize(800,800);
+		this.setSize(800, 800);
 		this.setVisible(true);
+		this.setResizable(false);
 
 	}
 
@@ -77,30 +76,26 @@ public class GameGUI extends JFrame
 	public static void main(String[] args)
 	{
 		{
-		    String host = "";
-		    int portNumber = 0; 
-		    
-		    
-		    try
-		    {
-		      host = args[0];
-		    }
-		    catch(ArrayIndexOutOfBoundsException e)
-		    {
-		      host = "localhost";
-		    }
-		    
-		    try
-		    {
-		      portNumber = Integer.parseInt(args[1]);
-		    }
-		    catch(ArrayIndexOutOfBoundsException e)
-		    {
-		      portNumber = DEFAULT_PORT;
-		    }
-		    
-		    
-		    new GameGUI(host,portNumber);
+			String host = "";
+			int portNumber = 0;
+
+			try
+			{
+				host = args[0];
+			} catch (ArrayIndexOutOfBoundsException e)
+			{
+				host = "localhost";
+			}
+
+			try
+			{
+				portNumber = Integer.parseInt(args[1]);
+			} catch (ArrayIndexOutOfBoundsException e)
+			{
+				portNumber = DEFAULT_PORT;
+			}
+
+			new GameGUI(host, portNumber);
+		}
 	}
-}
 }
