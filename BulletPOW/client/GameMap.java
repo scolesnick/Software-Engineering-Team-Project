@@ -61,7 +61,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		
 		//instantiates timer for refresh purposes - changing 60 to smaller number means slower, choppier movement
-		timer = new Timer (1000/60, new ActionListener() {
+		timer = new Timer (10, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	shoot(mousex, mousey);
@@ -221,9 +221,18 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {}
+
 	//whenever you click your mouse, this is what begins the bullet shooting rabbit hole of methods
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		
 		bulletShot = true;
 		my_bullet = new Bullets();
@@ -233,17 +242,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		mousex = e.getX();
 		mousey = e.getY();
-		
 	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
