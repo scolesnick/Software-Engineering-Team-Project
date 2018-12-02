@@ -20,7 +20,6 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	//dude image stuff
 	private BufferedImage dude;
 	private Image dudeImage;
-	private int x=0, y=0, player_speed=5;
 	
 	
 	//objects
@@ -33,7 +32,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private Timer timer;
 	
 	//keybinding flags
-	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, mouseClicked = false;
+	private boolean dPressed, aPressed, sPressed, wPressed;
 	private boolean bulletShot = false, otherBulletShot = false;
 	
 	//mouse click stuff
