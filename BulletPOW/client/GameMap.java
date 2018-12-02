@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.print.attribute.standard.MediaSize.Other;
 import javax.swing.*;
 
 public class GameMap extends JPanel implements ActionListener,MouseListener{
@@ -18,6 +19,16 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private BufferedImage dude;
 	private Image dudeImage;
 	private int x=0, y=0, player_speed=5;
+	
+	
+	//objects
+	private gameMechanics.Player me;
+	
+	private gameMechanics.Player other;
+	
+	private gameMechanics.Bullets bulletObject;
+	
+	private gameMechanics.Bullets otherBulletObject;
 
 	//timer creation
 	private Timer timer;
@@ -26,13 +37,18 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private boolean dPressed, aPressed, sPressed, wPressed, spPressed, bulletShot = false, mouseClicked = false;
 	
 	//mouse click stuff
-	private int mousex, mousey, tempx, tempy;
+	private int mousex, mousey;
 	
 	//bullet stuff
 	Rectangle bullet;
 	private int bx=0, by=0, bspeed=10;
-	double bulletV = 8.0;
+	double bulletV = 2.0;
 	double angle, xVel, yVel;
+	
+	Rectangle otherBullet;
+	private int otherbx=0, otherby=0, otherbspeed=10;
+	double otherAngle, otherxVel, otheryVel;
+	private boolean otherBulletShot;
 	
 	public GameMap() {
 		
@@ -52,7 +68,6 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
             @Override
             public void actionPerformed(ActionEvent e) {
             	shoot(mousex, mousey);
-    			removeBullet();
                 move();
                 repaint();
             }
@@ -137,36 +152,45 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	public void move() {
 		//these if statements tell the image what to do when a certain key is pressed
 		if (dPressed) {
-			if (x+player_speed < getPanelWidth() - dude.getWidth()) {
-				x += player_speed;
+			if (me.getX() + me.getSpeed() < getPanelWidth() - dude.getWidth()) {
+				me.setX(me.getX() + me.getSpeed());
 			}
 		}
 		if (aPressed) {
-			if(x-player_speed > 0) {
-				x -= player_speed;
+			if(me.getX() - me.getSpeed() > 0) {
+				me.setX(me.getX() - me.getSpeed());
 			}
 		}
 		if (sPressed) {
-			if(y+player_speed < this.getHeight() - dude.getHeight()) {
-				y += player_speed;
+			if(me.getY() + me.getSpeed() < this.getHeight() - dude.getHeight()) {
+				me.setY(me.getY() + me.getSpeed());
 			}
 		}
 		if (wPressed) {
-			if(y-player_speed > 0) {
-				y -= player_speed;
+			if(me.getY() - me.getSpeed() > 0) {
+				me.setY(me.getY() - me.getSpeed());
 			}
 		}
 	}
 	
-	public void shoot(int mousex, int mousey) {
-			
-		if (bulletShot) {
-			angle = Math.atan2(mousey - tempy,mousex - tempx);
-			xVel = (bulletV) * Math.cos(angle);
-			yVel = (bulletV) * Math.sin(angle);
-			bullet.x += xVel;
-			bullet.y += yVel;
+	public void shoot(int mousex, int mousey)
+	{		
+		if (bulletShot)
+		{
+			bulletObject.setAngle(Math.atan2(mousey - me.getY(), mousex - me.getX()));
+			bulletObject.setXVel((bulletV) * Math.cos(bulletObject.getAngle()));
+			bulletObject.setYVel((bulletV) * Math.sin(bulletObject.getAngle()));
+			bullet.x += bulletObject.getXVel();
+			bullet.y += bulletObject.getYVel();
 		}
+		
+		if (otherBulletShot)
+		{
+			otherBulletObject.setXVel((bulletV) * Math.cos(otherBulletObject.getAngle()));
+			otherBulletObject.setYVel((bulletV) * Math.sin(otherBulletObject.getAngle()));
+			otherBullet.x += otherBulletObject.getXVel();
+			otherBullet.y += otherBulletObject.getYVel();
+		} 
 	}
 	
 	public void removeBullet() {
@@ -178,20 +202,42 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 			if (bullet.y <= 10 || bullet.y >= 690) {
 				bullet = new Rectangle(0,0,0,0);
 			}
+			
+			if (Math.abs(bullet.x - other.getX()) < 20 && Math.abs(bullet.y - other.getY()) < 15)
+			{
+				other.updateHealth(-bulletObject.getDamage());
+				bullet = new Rectangle(0,0,0,0);
+			}
 		}
+		
+		if (otherBulletShot) {
+			if (bullet.x <= 10 || bullet.x >= 720) {
+				bullet = new Rectangle(0,0,0,0);
+			}
+			if (bullet.y <= 10 || bullet.y >= 690) {
+				bullet = new Rectangle(0,0,0,0);
+			}
+			
+			if (Math.abs(bullet.x - other.getX()) < 20 && Math.abs(bullet.y - other.getY()) < 15)
+			{
+				other.updateHealth(-bulletObject.getDamage());
+				bullet = new Rectangle(0,0,0,0);
+			}
+		}
+		
+		
 	}
 	
 	@Override
     protected void paintComponent(Graphics g) {
 		//paints the player image on the panel
         super.paintComponent(g);
-        g.drawImage(dudeImage, x, y, this);
+        g.drawImage(dudeImage, me.getX(), me.getY(), this);
         
         //draws a bullet if one is shot
         if (bulletShot) {
-        	g.setColor(Color.YELLOW);
+        	g.setColor(Color.BLACK);
         	g.drawRect(bullet.x,bullet.y,bullet.width,bullet.height);
-        	g.fillRect(bullet.x,bullet.y,bullet.width,bullet.height);
         }
 	}
 	
@@ -206,13 +252,13 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		
 		bulletShot = true;
-		bx = x+18;
-		by = y+15;
-		bullet = new Rectangle(bx, by, 8, 8);
+		bx = me.getX() + 18;
+		by = me.getY() + 15;
+		bullet = new Rectangle(bx, by, 3, 5);
 		mousex = e.getX();
 		mousey = e.getY();
-		tempx = bx;
-		tempy = by;
+		System.out.println(mousex + "   " + mousey);
+		
 	}
 
 	@Override
