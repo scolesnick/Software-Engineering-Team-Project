@@ -7,57 +7,105 @@ import messageData.*;
 import ocsf.client.AbstractClient;
 import server.ServerMessage;
 
-public class GameClient extends AbstractClient {
+public class GameClient extends AbstractClient
+{
 
 	private LoginControl loginController;
 	private CreateAccountControl createController;
 	private User currentUser;
 	private JoinGameControl joinController;
+	private GameMenuControl gameMenuController;
 	private GameControl gameController;
 	String loginID;
 
-	public GameClient(String host, int port) throws IOException {
+	public GameClient(String host, int port) throws IOException
+	{
 		super(host, port);
 		openConnection();
 
 	}
 
-	public void setCreateController(CreateAccountControl cc) {
+	public void displayLoginPanel()
+	{
+		loginController.displayLoginPanel();
+	}
+
+	public void displayCreateAccountPanel()
+	{
+		createController.displayCreateAccountPanel();
+	}
+
+	public void displayGameMenuPanel()
+	{
+		gameMenuController.displayGameMenuPanel();
+	}
+
+	public void displayJoinGamePanel()
+	{
+		joinController.displayJoinGamePanel();
+	}
+
+	public void displayGamePanel()
+	{
+		gameController.displayGamePanel();
+	}
+
+	public GameMenuControl getGameMenuController()
+	{
+		return gameMenuController;
+	}
+
+	public void setGameMenuController(GameMenuControl gameMenuController)
+	{
+		this.gameMenuController = gameMenuController;
+	}
+
+	public void setCreateController(CreateAccountControl cc)
+	{
 		createController = cc;
 	}
 
-	public void setLoginController(LoginControl lc) {
+	public void setLoginController(LoginControl lc)
+	{
 		loginController = lc;
 	}
 
-	public void setJoinGameController(JoinGameControl jgc) {
+	public void setJoinGameController(JoinGameControl jgc)
+	{
 		joinController = jgc;
 	}
 
-	public void setGameControl(GameControl gc) {
+	public void setGameControl(GameControl gc)
+	{
 		gameController = gc;
 	}
 
-	public User getCurrentUser() {
+	public User getCurrentUser()
+	{
 		return currentUser;
 	}
 
-	public void setCurrentUser(User currentUser) {
+	public void setCurrentUser(User currentUser)
+	{
 		this.currentUser = currentUser;
 	}
 
 	@Override
-	public void handleMessageFromServer(Object msg) {
-		if (msg instanceof User) {
+	public void handleMessageFromServer(Object msg)
+	{
+		if (msg instanceof User)
+		{
 			setCurrentUser((User) msg);
 			loginController.loginSuccess();
 		}
 
-		else if (msg instanceof JoinGameData) {
-			switch (((JoinGameData) msg).getMessageType()) {
+		else if (msg instanceof JoinGameData)
+		{
+			switch (((JoinGameData) msg).getMessageType())
+			{
 			case JoinGame:
-				joinController.displayGamePanel();
-				gameController.update(((JoinGameData) msg).getGameData());
+				this.displayGamePanel();
+				gameController.updateEnemy(((JoinGameData) msg).getGameData());
 				break;
 			case GameListUpdate:
 				joinController.updateGameList(((JoinGameData) msg).getGameList());
@@ -67,10 +115,13 @@ public class GameClient extends AbstractClient {
 			}
 		}
 
-		else if (msg instanceof GameActionData) {
-			gameController.update((GameActionData) msg);
-		} else if (msg instanceof ServerMessage) {
-			switch ((ServerMessage) msg) {
+		else if (msg instanceof GameActionData)
+		{
+			gameController.updateEnemy((GameActionData) msg);
+		} else if (msg instanceof ServerMessage)
+		{
+			switch ((ServerMessage) msg)
+			{
 			case InvalidLogin:
 				loginController.displayError(((ServerMessage) msg).getMessage());
 				break;
@@ -91,6 +142,14 @@ public class GameClient extends AbstractClient {
 			}
 		}
 
+	}
+
+	@Override
+	protected void connectionException(Exception exception)
+	{
+		exception.printStackTrace();
+		super.connectionException(exception);
+		System.exit(0);
 	}
 
 }

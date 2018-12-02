@@ -16,6 +16,8 @@ public class GameInfo {
 
 		guest = new Player();
 		host = new Player();
+		guestBullets = new Bullets();
+		hostBullets = new Bullets();
 
 		guestID = null;
 	}

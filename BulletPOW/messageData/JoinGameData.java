@@ -1,10 +1,12 @@
 package messageData;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import gameMechanics.GameInfo;
 import server.ServerMessage;
 
-public class JoinGameData {
+public class JoinGameData implements Serializable{
 
 	String gameName;
 	GameActionData gameData;
@@ -27,10 +29,15 @@ public class JoinGameData {
 		this.gameName = null;
 	}
 	
-	public JoinGameData(ArrayList<String> gameList) 
+	public JoinGameData(ArrayList<GameInfo> gameList) 
 	{
 		this.messageType = ServerMessage.GameListUpdate;
-		this.gameList = gameList;
+		this.gameList = new ArrayList<>();
+		
+		for(GameInfo game : gameList) 
+		{
+			this.gameList.add(game.getGameName());
+		}
 		
 		this.gameData = null;
 		this.gameName = null;

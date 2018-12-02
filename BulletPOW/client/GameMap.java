@@ -59,20 +59,25 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		addMouseListener(this);
 		
-		
-		//instantiates timer for refresh purposes - changing 60 to smaller number means slower, choppier movement
-		timer = new Timer (10, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	shoot(mousex, mousey);
-            	removeBullet();
-                move();
-                my_bullet.moveBullet();
-                opponent_bullet.moveBullet();
-                repaint();
-            }
-        });
-        timer.start();
+		// instantiates timer for refresh purposes - changing 60 to smaller number means
+		// slower, choppier movement
+		timer = new Timer(1000 / 60, new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+				// Send info to server
+				gc.update(me, my_bullet);
+
+				shoot(mousex, mousey);
+				removeBullet();
+				move();
+				my_bullet.moveBullet();
+				opponent_bullet.moveBullet();
+				repaint();
+			}
+		});
 		
 		addAllKeyBindings();
     }

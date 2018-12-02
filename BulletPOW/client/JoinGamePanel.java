@@ -6,24 +6,27 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class JoinGamePanel extends JPanel {
+public class JoinGamePanel extends JPanel
+{
 
 	private JList<String> gameArea;
 	private DefaultListModel<String> listModel;
 
-	public void updateGameList(ArrayList<String> gameList) 
+	public void updateGameList(ArrayList<String> gameList)
 	{
-		for(String gameName : gameList) 
+		for (String gameName : gameList)
 		{
 			listModel.addElement(gameName);
 		}
 	}
 
-	public String getSelectedValue() {
+	public String getSelectedValue()
+	{
 		return gameArea.getSelectedValue();
 	}
 
-	public JoinGamePanel(JoinGameControl jgc) {
+	public JoinGamePanel(JoinGameControl jgc)
+	{
 		listModel = new DefaultListModel<String>();
 		// listModel.addElement("item 1");
 

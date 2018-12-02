@@ -20,59 +20,46 @@ public class GameMenuControl implements ActionListener
 	private JPanel container;
 	private JLabel status;
 	private GameClient client;
-	
-	
+
 	// Constructor
 	public GameMenuControl(JPanel container, GameClient gc)
 	{
 		this.client = gc;
 		this.container = container;
-		
-	}
-	
-	public void displayJoinGamePanel()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "join");
-	}
-	
-	public void displayLoginPanel()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "login");
-	}
-	
-	public void displayGamePanel()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "game");
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		String command = e.getActionCommand();
-		
-		if(command == "Logout") 
+
+		if (command == "Logout")
 		{
-			displayLoginPanel();
-		}
-		else if(command == "Join Game")
+			client.displayLoginPanel();
+		} else if (command == "Join Game")
 		{
-			displayJoinGamePanel();
-		}
-		else if(command == "Host Game")
+			client.displayJoinGamePanel();
+		} else if (command == "Host Game")
 		{
-			
-			try {
+
+			try
+			{
 				client.sendToServer(ServerMessage.HostGame);
-			} catch (IOException e1) {
+			} catch (IOException e1)
+			{
 				e1.printStackTrace();
 			}
-			
-			displayGamePanel();
+			client.displayGamePanel();
 		}
-		
+
+	}
+
+	public void displayGameMenuPanel()
+	{
+		CardLayout cLayout = (CardLayout) container.getLayout();
+		cLayout.show(container, "menu");
+
 	}
 
 }
