@@ -20,6 +20,8 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	// dude image stuff
 	private BufferedImage dude;
 	private Image dudeImage;
+	private BufferedImage dude2;
+	private Image dudeImage2;
 
 	// objects
 	//TODO condense more functionality in GameMap into Player and Bullet object
@@ -78,6 +80,7 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		try
 		{
 			dude = ImageIO.read(new File("guy1.jpg"));
+			dude2 = ImageIO.read(new File("guy2.jpg"));
 		} catch (IOException ex)
 		{
 		}
@@ -92,6 +95,7 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 
 		// creates an Image based on the BufferedImage that initially loads the file
 		dudeImage = dude.getScaledInstance(dude.getWidth(), dude.getHeight(), Image.SCALE_SMOOTH);
+		dudeImage2 = dude2.getScaledInstance(dude2.getWidth(), dude2.getHeight(), Image.SCALE_SMOOTH);
 
 		addMouseListener(this);
 
@@ -276,7 +280,7 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		// paints the player image on the panel
 		super.paintComponent(g);
 		g.drawImage(dudeImage, me.getX(), me.getY(), this);
-		g.drawImage(dudeImage, opponent.getX(), opponent.getY(), this);
+		g.drawImage(dudeImage2, opponent.getX(), opponent.getY(), this);
 
 		// draws a bullet if one is shot
 		if (bulletShot)
