@@ -27,9 +27,16 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	private Player opponent;	
 	private Bullets my_bullet;
 	private Bullets opponent_bullet;
+	
+	public void setPlayer(Player player) {this.me = player;}
+	public void setBullet(Bullets playerBullet) {this.my_bullet = playerBullet;}
+	public void setOpponent(Player opponent) {this.opponent = opponent;}
+	public void setOpponentBullet(Bullets opponent_bullet) {this.opponent_bullet = opponent_bullet;}
 
 	//timer creation
 	private Timer timer;
+	public void startGame() {timer.start();}
+	public void pauseGame() {timer.stop();}
 	
 	//keybinding flags
 	private boolean dPressed, aPressed, sPressed, wPressed;
@@ -40,7 +47,7 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 	
 	//bullet stuff
 
-	public GameMap() {
+	public GameMap(GameControl gc) {
 		
 		//creates a buffered image from the jpg stored above the package
 		try {dude = ImageIO.read(new File("guy1.jpg"));} catch (IOException ex) {}
@@ -58,11 +65,16 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
 		
 		addMouseListener(this);
 		
-		
 		//instantiates timer for refresh purposes - changing 60 to smaller number means slower, choppier movement
 		timer = new Timer (1000/60, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	
+            	//Send info to server
+            	gc.update(me, my_bullet);
+
+            	
+            	
             	shoot(mousex, mousey);
             	removeBullet();
                 move();
@@ -71,7 +83,6 @@ public class GameMap extends JPanel implements ActionListener,MouseListener{
                 repaint();
             }
         });
-        timer.start();
 		
 		addKeyBindings();
     }

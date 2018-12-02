@@ -30,8 +30,7 @@ public class LoginControl implements ActionListener
     // The Create button takes the user to the create account panel
     if (command == "Create")
     {
-      CardLayout cardLayout = (CardLayout)container.getLayout();
-      cardLayout.show(container, "create");
+      client.displayCreateAccountPanel();
     }
 
     // The Submit button submits the login information to the server.
@@ -60,8 +59,7 @@ public class LoginControl implements ActionListener
 
   public void loginSuccess()
   {
-	  CardLayout cardLayout = (CardLayout)container.getLayout();
-      cardLayout.show(container, "menu");
+	  client.displayGameMenuPanel();
       displayError("");
   }
 
@@ -71,4 +69,9 @@ public class LoginControl implements ActionListener
     loginPanel.setError(error);
     
   }
+
+public void displayLoginPanel() {
+	  CardLayout cardLayout = (CardLayout)container.getLayout();
+      cardLayout.show(container, "login");
+}
 }

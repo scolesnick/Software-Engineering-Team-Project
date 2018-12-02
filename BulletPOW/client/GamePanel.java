@@ -57,7 +57,7 @@ public class GamePanel extends JPanel
 		right.setBackground(Color.DARK_GRAY);
 		
 		// game panel
-		game = new GameMap();
+		game = new GameMap(gc);
 		game.setPreferredSize(new Dimension(WIDTH - 50, HEIGHT - 80));
 		game.setBackground(Color.BLUE);
 		game.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3, true));

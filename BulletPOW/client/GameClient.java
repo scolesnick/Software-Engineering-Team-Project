@@ -13,6 +13,7 @@ public class GameClient extends AbstractClient {
 	private CreateAccountControl createController;
 	private User currentUser;
 	private JoinGameControl joinController;
+	private GameMenuControl gameMenuController;
 	private GameControl gameController;
 	String loginID;
 
@@ -21,6 +22,25 @@ public class GameClient extends AbstractClient {
 		openConnection();
 
 	}
+	
+
+	public void displayLoginPanel() {loginController.displayLoginPanel();}
+	public void displayCreateAccountPanel() {createController.displayCreateAccountPanel();}
+	public void displayGameMenuPanel() {gameMenuController.displayGameMenuPanel();}
+	public void displayJoinGamePanel() {joinController.displayJoinGamePanel();}
+	public void displayGamePanel() {gameController.displayGamePanel();}
+
+	
+	
+	public GameMenuControl getGameMenuController() {
+		return gameMenuController;
+	}
+
+
+	public void setGameMenuController(GameMenuControl gameMenuController) {
+		this.gameMenuController = gameMenuController;
+	}
+
 
 	public void setCreateController(CreateAccountControl cc) {
 		createController = cc;
@@ -56,8 +76,8 @@ public class GameClient extends AbstractClient {
 		else if (msg instanceof JoinGameData) {
 			switch (((JoinGameData) msg).getMessageType()) {
 			case JoinGame:
-				joinController.displayGamePanel();
-				gameController.update(((JoinGameData) msg).getGameData());
+				this.displayGamePanel();;
+				gameController.updateEnemy(((JoinGameData) msg).getGameData());
 				break;
 			case GameListUpdate:
 				joinController.updateGameList(((JoinGameData) msg).getGameList());
@@ -68,7 +88,7 @@ public class GameClient extends AbstractClient {
 		}
 
 		else if (msg instanceof GameActionData) {
-			gameController.update((GameActionData) msg);
+			gameController.updateEnemy((GameActionData) msg);
 		} else if (msg instanceof ServerMessage) {
 			switch ((ServerMessage) msg) {
 			case InvalidLogin:

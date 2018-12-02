@@ -33,8 +33,7 @@ public class CreateAccountControl implements ActionListener{
 	    // The Cancel button takes the user back to the initial panel.
 	    if (command == "Cancel")
 	    {
-	      CardLayout cardLayout = (CardLayout)container.getLayout();
-	      cardLayout.show(container, "login");
+	      client.displayLoginPanel();
 	    }
 
 	    // The Submit button submits the create information to the server.
@@ -80,8 +79,7 @@ public class CreateAccountControl implements ActionListener{
 	  public void createSuccess()
 	  {
 	    
-		  CardLayout cardLayout = (CardLayout)container.getLayout();
-	      cardLayout.show(container, "login");
+		  client.displayLoginPanel();
 		  
 	  }
 
@@ -91,4 +89,10 @@ public class CreateAccountControl implements ActionListener{
 	    panel.setError(error);
 	    
 	  }
+
+	public void displayCreateAccountPanel() {
+	      CardLayout cardLayout = (CardLayout)container.getLayout();
+	      cardLayout.show(container, "create");
+		
+	}
 }

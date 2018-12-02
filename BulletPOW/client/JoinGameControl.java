@@ -23,17 +23,6 @@ public class JoinGameControl implements ActionListener
 		//JoinGamePanel panel = (JoinGamePanel)container.getComponent(2);
 	}
 	
-	public void displayMenuPanel()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "menu");
-	}
-	public void displayGamePanel()
-	{
-		CardLayout cLayout = (CardLayout)container.getLayout();
-		cLayout.show(container, "game");
-	}
-	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0)
@@ -42,7 +31,7 @@ public class JoinGameControl implements ActionListener
 		
 		if(command == "Back")
 		{
-			displayMenuPanel();
+			client.displayGameMenuPanel();
 		}
 		else if(command == "Join")
 		{
@@ -54,7 +43,7 @@ public class JoinGameControl implements ActionListener
 				e.printStackTrace();
 			}
 			
-			displayGamePanel();
+			client.displayGamePanel();
 		}
 		
 	}
@@ -65,5 +54,11 @@ public class JoinGameControl implements ActionListener
 	    joinPanel.updateGameList(gameList);
 	    
 	  }
+
+	public void displayJoinGamePanel() {
+		  CardLayout cardLayout = (CardLayout)container.getLayout();
+	      cardLayout.show(container, "join");
+		
+	}
 	
 }

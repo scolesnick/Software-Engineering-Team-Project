@@ -20,6 +20,7 @@ public class GameGUI extends JFrame
 			client.openConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(0);
 		}
 		
 		// Set the title and default close operation.
@@ -40,6 +41,7 @@ public class GameGUI extends JFrame
 		client.setCreateController(cc);
 		client.setLoginController(lc);
 		client.setJoinGameController(jgc);
+		client.setGameMenuController(gmc);
 		client.setGameControl(gc);
 
 		
