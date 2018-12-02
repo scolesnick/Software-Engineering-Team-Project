@@ -1,5 +1,6 @@
 package gameMechanics;
 
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 public class Bullets implements Serializable
@@ -10,19 +11,27 @@ public class Bullets implements Serializable
 	private int y;
 	private double angle, xVel, yVel;
 	
-	public void setAngle(double a)
-	{
-		angle = a;
+	private Rectangle box;
+	private int bx, by, bullet_speed=10;
+	private int b_width = 8, b_height = 8;
+	
+	public void setBox() {
+		box = new Rectangle(x,y,b_width,b_height);
+	}
+	public void resetBox() {
+		box = new Rectangle(0,0,0,0);
+		x = y = 0;
+		xVel = yVel = 0;
+	}
+	public Rectangle getBox() {
+		return box;
 	}
 	
-	public void setXVel(double xV)
-	{
-		xVel = xV;
-	}
-	
-	public void setYVel(double yV)
-	{
-		yVel = yV;
+	public void setVelocity(int mouseY, int mouseX) {
+		angle = Math.atan2(mouseY-y, mouseX-x);
+		xVel = bullet_speed * Math.cos(angle);
+		yVel = bullet_speed * Math.sin(angle);
+//		System.out.println("angle: "+angle+"\txVel: "+xVel+"\tyVel"+yVel);
 	}
 	
 	public void setX(int x)
@@ -72,18 +81,11 @@ public class Bullets implements Serializable
 	
 	public void moveBullet()
 	{
+//		box.x += xVel;
+//		box.y += yVel;
 		x += xVel;
 		y += yVel;
 	}
-	
-	public Bullets(double angle, double xVel, double yVel, int x, int y, int damage)
-	{
-		setAngle(angle);
-		setXVel(xVel);
-		setYVel(yVel);
-		setX(x);
-		setY(y);
-		setDamage(damage);
-	}
+	public Bullets() {};
 
 }
