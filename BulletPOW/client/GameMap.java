@@ -123,8 +123,8 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 					aBuff.createBuff();
 					buffActive = true;
 				}
-				
-				gc.update(me, my_bullet);
+				// gc update commented for bullet glitch
+//				gc.update(me, my_bullet);
 				move();
 				useBuff();
 				repaint();
