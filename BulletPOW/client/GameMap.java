@@ -64,7 +64,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	// keybinding flags
 	private boolean t = true, f = false;
 	private boolean dPressed, aPressed, sPressed, wPressed;
-	private boolean bulletShot = false, otherBulletShot = false;
 
 	// mouse click stuff
 	private int mousex, mousey;
@@ -87,6 +86,8 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		opponent = new Player();
 		my_bullet = new Bullets();
 		opponent_bullet = new Bullets();
+		System.out.println("instantiated bullets");
+
 
 		// creates an Image based on the BufferedImage that initially loads the file
 		dudeImage = dude.getScaledInstance(dude.getWidth(), dude.getHeight(), Image.SCALE_SMOOTH);
@@ -101,14 +102,16 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				move();
+//				System.out.println("Bullet flying: "+my_bullet.getFly());
+				if(my_bullet.getFly()) {
+					System.out.println("bullet is flying");
+					my_bullet.moveBullet();
+				}
+				me.updateHealth(opponent_bullet.checkCollision(me.getX(), me.getY()));
+
 				// Send info to server
 				gc.update(me, my_bullet);
-
-				shoot(mousex, mousey);
-				removeBullet();
-				move();
-				my_bullet.moveBullet();
-				opponent_bullet.moveBullet();
 				repaint();
 			}
 		});
@@ -204,62 +207,6 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		}
 	}
 
-	// is called upon in the timer to constantly be checking and updating the x,y
-	// coords of bullets
-	public void shoot(int mousex, int mousey)
-	{
-		if (bulletShot)
-		{
-			my_bullet.setVelocity(mousey, mousex);
-			my_bullet.moveBullet();
-		}
-
-		if (otherBulletShot)
-		{
-			opponent_bullet.setVelocity(mousey, mousex);
-			opponent_bullet.moveBullet();
-		}
-	}
-
-	// if a bullet collides with another object or the edges of the panel, it is
-	// removed here
-	public void removeBullet()
-	{
-		if (bulletShot)
-		{
-			if (my_bullet.getX() <= 10 || my_bullet.getX() >= 720)
-			{
-				my_bullet.resetBox();
-			}
-			if (my_bullet.getY() <= 10 || my_bullet.getY() >= 690)
-			{
-				my_bullet.resetBox();
-			}
-			if (Math.abs(my_bullet.getX() - opponent.getX()) < 20 && Math.abs(my_bullet.getY() - opponent.getY()) < 15)
-			{
-				opponent.updateHealth(-my_bullet.getDamage());
-				my_bullet.resetBox();
-			}
-		}
-
-		if (otherBulletShot)
-		{
-			if (opponent_bullet.getX() <= 10 || opponent_bullet.getX() >= 720)
-			{
-				opponent_bullet.resetBox();
-			}
-			if (opponent_bullet.getY() <= 10 || opponent_bullet.getY() >= 690)
-			{
-				opponent_bullet.resetBox();
-			}
-			if (Math.abs(opponent_bullet.getX() - me.getX()) < 20 && Math.abs(opponent_bullet.getY() - me.getY()) < 15)
-			{
-				me.updateHealth(-opponent_bullet.getDamage());
-				opponent_bullet.resetBox();
-			}
-		}
-	}
-
 	// this is called in the timer by repaint() to constantly be repainting the
 	// panel when a change occurs
 	@Override
@@ -271,9 +218,10 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 		g.drawImage(dudeImage2, opponent.getX(), opponent.getY(), this);
 
 		// draws a bullet if one is shot
-		if (bulletShot)
+		if (my_bullet.getFly())
 		{
 			Rectangle bullet = my_bullet.getBox();
+			System.out.println("drawing rectangle: "+bullet);
 			g.setColor(Color.YELLOW);
 			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
 			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
@@ -290,14 +238,16 @@ public class GameMap extends JPanel implements ActionListener, MouseListener
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		bulletShot = true;
+		System.out.println("mouse pressed");
 		my_bullet = new Bullets();
 		my_bullet.setX(me.getX() + 18);
 		my_bullet.setY(me.getY() + 15);
 		my_bullet.setBox();
+		my_bullet.setFly(true);
 		
 		mousex = e.getX();
 		mousey = e.getY();
+		my_bullet.setVelocity(mousey, mousex);
 	}
 	
 	@Override
