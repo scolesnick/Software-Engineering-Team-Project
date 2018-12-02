@@ -9,9 +9,9 @@ public class Bullets implements Serializable
 	private int damage = 1;
 	private int x;
 	private int y;
-	private double angle, xVel, yVel;
+	private double angle, xVel=0, yVel=0;
 	
-	private Rectangle box;
+	private Rectangle box = new Rectangle(0,0,0,0);
 	private int bx, by, bullet_speed=10;
 	private int b_width = 8, b_height = 8;
 	
@@ -81,8 +81,8 @@ public class Bullets implements Serializable
 	
 	public void moveBullet()
 	{
-//		box.x += xVel;
-//		box.y += yVel;
+		box.x += xVel;
+		box.y += yVel;
 		x += xVel;
 		y += yVel;
 	}
