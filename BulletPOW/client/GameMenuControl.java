@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import ocsf.server.ConnectionToClient;
 import server.GameServer;
+import server.ServerMessage;
 
 public class GameMenuControl implements ActionListener
 {
@@ -63,11 +64,9 @@ public class GameMenuControl implements ActionListener
 		else if(command == "Host Game")
 		{
 			
-			String hostPushed = "Host button pushed";
 			try {
-				client.sendToServer(hostPushed);
+				client.sendToServer(ServerMessage.HostGame);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			

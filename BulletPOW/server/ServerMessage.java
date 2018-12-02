@@ -7,7 +7,11 @@ public enum ServerMessage {
 	ExistingAccount("Username already exists"),
 	CreateSuccess("Creation Successful"),
 	DatabaseError("Error with Server Database"),
-	GameListUpdate("do not know what to put here");
+	GameAlreadyInPlay("This game is already in play"),
+	GameListUpdate,
+	GameUpdate,
+	HostGame,
+	JoinGame;
 	
 	
 	private String message;
@@ -15,6 +19,11 @@ public enum ServerMessage {
 	ServerMessage(String message) 
 	{
 		this.message = message;
+	}
+	
+	private ServerMessage() 
+	{
+		this.message = this.name();
 	}
 	
 	public String getMessage() 

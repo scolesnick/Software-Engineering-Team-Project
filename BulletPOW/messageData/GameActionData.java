@@ -3,10 +3,18 @@ package messageData;
 import java.awt.Event;
 import java.io.Serializable;
 
+import gameMechanics.*;
+
 public class GameActionData implements Serializable{
 	
-	private gameMechanics.GameInfo game;
-	private Event event;
-	private gameMechanics.Player player;
+	private GameInfo game;
+	private Player player;
+	private Bullets bullet;
+	
+	public GameActionData(Player player, Bullets bullet) 
+	{
+		this.player = player;
+		this.bullet = bullet;
+	}
 
 }

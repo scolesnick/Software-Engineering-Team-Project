@@ -2,32 +2,32 @@ package client;
 
 import javax.swing.*;
 
+import messageData.GameActionData;
+
 import java.awt.CardLayout;
 import java.awt.event.*;
 
 public class GameControl implements ActionListener
 {
 	private JPanel container;
-	private JPanel gameMap;
 	private GameClient client;
 	private JLabel status;
-//	private GameInfo game;
 	
 	public GameControl(JPanel container, GameClient client)
 	{
 		this.client = client;
 		this.container = container;
-//		this.gameMap = ((GamePanel) container.getComponent(4)).getGameMap();
+	}
+
+	
+	/*
+	 * GameMap mechanics updated here
+	 */
+	public void update(GameActionData gameData) 
+	{
+		GameMap gameMap = (GameMap) ((GamePanel) container.getComponent(4)).getGameMap();
 	}
 	
-	public void checkCollision()
-	{
-		
-	}
-	public void addPlayer()
-	{
-		
-	}
 	public void displayLoginPanel()
 	{
 		CardLayout cLayout = (CardLayout)container.getLayout();
