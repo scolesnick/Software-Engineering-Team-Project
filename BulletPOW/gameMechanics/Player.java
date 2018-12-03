@@ -1,26 +1,42 @@
 package gameMechanics;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Player implements Serializable{
 	
-	private int health = 5;
-	private int speed = 5;
-	private int damage = 1;
-	private int x = 0, y = 0;
+	private int health;
+	private int speed;
+	private int damage;
+	private int x, y;
+	private int xbound, ybound;
 	
+	private Image graphicImage;
+	private BufferedImage graphic;
 
 	
 	
-	//TODO specific constructor
-	public Player()
+	public Player(BufferedImage graphic, int x, int y)
 	{
+		health = 5;
+		speed = 1;
+		damage = 1;
+		this.x = x;
+		this.y = y;
 		
+		xbound = graphic.getWidth();
+		ybound = graphic.getHeight();
+		
+		graphicImage = graphic.getScaledInstance(graphic.getWidth(), graphic.getHeight(), Image.SCALE_SMOOTH);
 	}
 	
 	//TODO Graphics
-	public void getGraphic() {}
+	public Image getGraphic() 
+	{
+		return graphicImage;
+	}
 	
 	
 	public int getX()

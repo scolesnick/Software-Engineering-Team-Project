@@ -9,9 +9,8 @@ public enum ServerMessage {
 	DatabaseError("Error with Server Database"),
 	GameAlreadyInPlay("This game is already in play"),
 	GameListUpdate,
-	GameUpdate,
 	HostGame,
-	JoinGame;
+	JoinGameSuccess("Player has joined a game");
 	
 	
 	private String message;

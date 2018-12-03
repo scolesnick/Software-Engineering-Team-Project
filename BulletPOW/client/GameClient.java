@@ -97,20 +97,14 @@ public class GameClient extends AbstractClient
 
 		else if (msg instanceof JoinGameData)
 		{
-			switch (((JoinGameData) msg).getMessageType())
-			{
-			case JoinGame:
-				this.displayGamePanel();
-				//TODO
-				break;
-			case GameListUpdate:
-				joinController.updateGameList(((JoinGameData) msg).getGameList());
-				break;
-			default:
-				break;
-			}
+			joinController.updateGameList(((JoinGameData) msg).getGameList());
 		}
 		//TODO Add Game Functionality
+		else if (msg instanceof GameActionData) 
+		{
+			gameController.setOpponent(((GameActionData) msg).getPlayer());
+			gameController.setOpponent_bullets(((GameActionData) msg).getBullet());
+		}
 		else if (msg instanceof ServerMessage)
 		{
 			switch ((ServerMessage) msg)
@@ -127,6 +121,9 @@ public class GameClient extends AbstractClient
 			case DatabaseError:
 				createController.displayError(((ServerMessage) msg).getMessage());
 				loginController.displayError(((ServerMessage) msg).getMessage());
+				break;
+			case JoinGameSuccess:
+				gameController.displayGamePanel();
 				break;
 			default:
 				System.out.println(((ServerMessage) msg).getMessage());

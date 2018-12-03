@@ -1,7 +1,21 @@
-package gameMechanics;
+package server;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
+import javax.swing.Timer;
+
+import gameMechanics.*;
+import messageData.GameActionData;
+import ocsf.server.ConnectionToClient;
 
 public class GameInfo {
 
+	
+	private ConnectionToClient hostClient;
+	private ConnectionToClient guestClient;
+	
 	private Player guest;
 	private Player host;
 	private Long guestID;
@@ -9,19 +23,54 @@ public class GameInfo {
 	private String gameName;
 	private Bullets guestBullets;
 	private Bullets hostBullets;
+	private Timer timer;
 	
-	public GameInfo(String gameName, Long hostID) 
+	public GameInfo(String gameName, ConnectionToClient client) 
 	{
-		this.hostID = hostID;
+		
+		//Host info
+		this.hostClient = client;
+		this.hostID = hostClient.getId();
+		
+		//Guest Info
+		guestID = null;
+		guestClient = null;
+		
+		//Game Info
 		this.gameName = gameName;
 
+		//Game Objects
 		guest = new Player();
 		host = new Player();
 		guestBullets = new Bullets();
 		hostBullets = new Bullets();
 
-		guestID = null;
+		
+		
+		timer = new Timer(1000/120, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					hostClient.sendToClient(new GameActionData(guest, guestBullets));
+					guestClient.sendToClient(new GameActionData(host, hostBullets));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
+	
+	public void startGame() {
+	
+		if(guestClient != null && hostClient != null)
+		{
+			timer.start();
+		}	
+	}
+	
+	public void stopGame() {timer.stop();}
 
 	public Bullets getGuestBullets() 
 	{
@@ -91,5 +140,11 @@ public class GameInfo {
 	public void setHostID(Long hostID) 
 	{
 		this.hostID = hostID;
+	}
+
+	public void setGuest(ConnectionToClient client) {
+		this.guestClient = client;
+		this.guestID = client.getId();
+		
 	}
 }

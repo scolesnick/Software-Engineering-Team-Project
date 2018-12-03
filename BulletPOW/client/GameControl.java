@@ -5,6 +5,9 @@ import messageData.GameActionData;
 import server.ServerMessage;
 import gameMechanics.*;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.*;
 import java.io.IOException;
 
@@ -66,6 +69,32 @@ public class GameControl implements ActionListener, MouseListener
 	
 	//TODO update positions and send data to server
 	public void update() {}
+	
+	public void paintObjects(Graphics g) 
+	{
+		GameMap gameMap = (GameMap) ((GamePanel) container.getComponent(4)).getGameMap();
+		//Draw the player images
+		g.drawImage(player.getGraphic(), player.getX(), player.getY(), gameMap);
+		g.drawImage(opponent.getGraphic(), opponent.getX(), opponent.getY(), gameMap);
+		
+		
+		//Draw any bullets if they're active
+		if (player_bullets.getFly())
+		{
+			Rectangle bullet = player_bullets.getBox();
+			g.setColor(Color.CYAN);
+			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
+			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+		}
+		if (opponent_bullets.getFly())
+		{
+			Rectangle bullet = opponent_bullets.getBox();
+			g.setColor(Color.RED);
+			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
+			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+		}
+		
+	}
 	
 	
 	public Player getPlayer() {

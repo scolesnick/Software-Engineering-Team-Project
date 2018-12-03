@@ -50,8 +50,9 @@ public class GameServer extends AbstractServer
 				
 				if(game.getGuestID() == null) 
 				{
-					game.setGuestID(client.getId());
-					client.sendToClient(new JoinGameData(new GameActionData(game.getHost(), game.getHostBullets())));
+					game.setGuest(client);
+					client.sendToClient(ServerMessage.JoinGameSuccess);
+					game.startGame();
 				}
 				else 
 				{
@@ -76,22 +77,14 @@ public class GameServer extends AbstractServer
 			else if(msg instanceof ServerMessage) 
 			{
 				switch ((ServerMessage)msg) {
+				//Calls for when client requests a list of games
 				case GameListUpdate:
-					client.sendToClient(new JoinGameData(gameList));
-					break;
-				case GameUpdate:
-					GameInfo game = findGame(client);
-					if(game != null && game.getHostID() == client.getId()) 
-					{
-						client.sendToClient(new GameActionData(game.getGuest(), game.getGuestBullets()));
-					}
-					else if (game != null && game.getGuestID() == client.getId()) 
-					{
-						client.sendToClient(new GameActionData(game.getHost(), game.getHostBullets()));
-					}
+					ArrayList<String> gameNameList = new ArrayList<>();
+					for(GameInfo g : gameList) {gameNameList.add(g.getGameName());}
+					client.sendToClient(new JoinGameData(gameNameList));
 					break;
 				case HostGame:
-					GameInfo newGame = new GameInfo(client.getName(), client.getId());
+					GameInfo newGame = new GameInfo(client.getName(), client);
 					gameList.add(newGame);
 					break;
 				default:

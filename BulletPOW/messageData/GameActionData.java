@@ -6,7 +6,6 @@ import gameMechanics.*;
 
 public class GameActionData implements Serializable{
 	
-	private GameInfo game;
 	private Player player;
 	private Bullets bullet;
 	
