@@ -15,6 +15,16 @@ public class Bullets implements Serializable
 	private int b_width = 8, b_height = 8;
 	private boolean flying = false;
 	
+	public Bullets() 
+	{
+		
+	};
+	
+	
+	//TODO Graphics
+	public void getGraphic() {}
+	
+	
 	public void setFly(boolean f)
 	{
 		flying = f;
@@ -46,7 +56,6 @@ public class Bullets implements Serializable
 		angle = Math.atan2(mouseY-y, mouseX-x);
 		xVel = bullet_speed * Math.cos(angle);
 		yVel = bullet_speed * Math.sin(angle);
-//		System.out.println("angle: "+angle+"\txVel: "+xVel+"\tyVel"+yVel);
 	}
 	
 	public void setX(int x)
@@ -98,7 +107,6 @@ public class Bullets implements Serializable
 	{
 		box.x += xVel;
 		box.y += yVel;
-		System.out.println("bullet moved to: "+box.x+", "+box.y);
 		checkBounds(10, 10, 720, 690);
 	}
 	
@@ -106,12 +114,10 @@ public class Bullets implements Serializable
 	{
 		if (box.x <= xMin || box.x >= xMax)
 		{
-			System.out.println("bounds");
 			resetBox();
 		}
 		else if (box.y <= yMin || box.x >= yMax)
 		{
-			System.out.println("bounds");
 			resetBox();
 		}
 	}
@@ -126,5 +132,6 @@ public class Bullets implements Serializable
 			}
 		return 0;
 	}
-	public Bullets() {};
+	
+
 }

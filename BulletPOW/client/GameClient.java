@@ -101,7 +101,7 @@ public class GameClient extends AbstractClient
 			{
 			case JoinGame:
 				this.displayGamePanel();
-				gameController.updateEnemy(((JoinGameData) msg).getGameData());
+				//TODO
 				break;
 			case GameListUpdate:
 				joinController.updateGameList(((JoinGameData) msg).getGameList());
@@ -110,11 +110,7 @@ public class GameClient extends AbstractClient
 				break;
 			}
 		}
-
-		else if (msg instanceof GameActionData)
-		{
-			gameController.updateEnemy((GameActionData) msg);
-		} 
+		//TODO Add Game Functionality
 		else if (msg instanceof ServerMessage)
 		{
 			switch ((ServerMessage) msg)

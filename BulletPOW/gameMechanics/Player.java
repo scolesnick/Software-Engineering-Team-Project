@@ -9,8 +9,20 @@ public class Player implements Serializable{
 	private int speed = 5;
 	private int damage = 1;
 	private int x = 0, y = 0;
-	//private ArrayList<Bullets> bullets;
+	
 
+	
+	
+	//TODO specific constructor
+	public Player()
+	{
+		
+	}
+	
+	//TODO Graphics
+	public void getGraphic() {}
+	
+	
 	public int getX()
 	{
 		return x;
@@ -61,23 +73,13 @@ public class Player implements Serializable{
 		damage = d;
 	}
 	
-	/*public ArrayList<Bullets> getBullets()
-	{
-		return bullets;
-	}*/
-	
-	/*public void addBullet(Bullets b)
-	{
-		bullets.add(b);
-	}*/
-	
 	public void updateHealth(int h)
 	{
 		this.health += h;
 	}
 	
-	public Player()
-	{
-		
-	}
+	
+	
+	
+	
 }
