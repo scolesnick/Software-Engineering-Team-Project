@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 public class Player{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 438706143629463774L;
 	private int health;
 	private int speed;
 	private int damage;

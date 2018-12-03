@@ -17,6 +17,9 @@ public class Bullet
 	{
 		damage = 1;
 		
+		this.x = x;
+		this.y = y;
+		
 	}
 
 //	public void setFly(boolean f)
