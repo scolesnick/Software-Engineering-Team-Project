@@ -42,8 +42,8 @@ public class GameControl implements ActionListener, MouseListener {
 
 	public void initialize(ServerMessage msg) {
 		try {
-			BufferedImage image = ImageIO.read(new File("guy1.jpg"));
-			BufferedImage image2 = ImageIO.read(new File("guy2.jpg"));
+			BufferedImage image = ImageIO.read(new File("steve.jpg"));
+			BufferedImage image2 = ImageIO.read(new File("creeper.jpg"));
 
 			gameMap = (GameMap) ((GamePanel) container.getComponent(4)).getGameMap();
 			switch (msg) {
