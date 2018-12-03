@@ -104,6 +104,7 @@ public class GameClient extends AbstractClient
 		{
 			gameController.setOpponent(((GameActionData) msg).getPlayer());
 			gameController.setOpponent_bullets(((GameActionData) msg).getBullet());
+			gameController.update();
 		}
 		else if (msg instanceof ServerMessage)
 		{
@@ -123,6 +124,8 @@ public class GameClient extends AbstractClient
 				loginController.displayError(((ServerMessage) msg).getMessage());
 				break;
 			case JoinGameSuccess:
+			case HostGameSuccess:
+				gameController.initialize((ServerMessage)msg);
 				gameController.displayGamePanel();
 				break;
 			default:

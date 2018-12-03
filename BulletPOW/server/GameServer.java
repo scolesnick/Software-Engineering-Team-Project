@@ -58,6 +58,7 @@ public class GameServer extends AbstractServer
 				{
 					client.sendToClient(ServerMessage.GameAlreadyInPlay);
 				}
+				
 			}
 			else if (msg instanceof GameActionData) 
 			{
@@ -67,12 +68,16 @@ public class GameServer extends AbstractServer
 				{
 					game.setHost(((GameActionData) msg).getPlayer());
 					game.setHostBullets(((GameActionData) msg).getBullet());
+					
+					System.out.println("Data received: " + ((GameActionData) msg).getPlayer().getX() + ", " + ((GameActionData) msg).getPlayer().getY());
+					System.out.println("Host at: " + game.getHost().getX() + ", " + game.getHost().getY());
 				}
 				else if (game != null && game.getGuestID() == client.getId()) 
 				{
 					game.setGuest(((GameActionData) msg).getPlayer());
 					game.setGuestBullets(((GameActionData) msg).getBullet());
 				}
+				
 			}
 			else if(msg instanceof ServerMessage) 
 			{
@@ -86,6 +91,7 @@ public class GameServer extends AbstractServer
 				case HostGame:
 					GameInfo newGame = new GameInfo(client.getName(), client);
 					gameList.add(newGame);
+					client.sendToClient(ServerMessage.HostGameSuccess);
 					break;
 				default:
 					break;
@@ -121,6 +127,16 @@ public class GameServer extends AbstractServer
 		System.out.println("Server and clients are closed - Press Listen to Restart");
 	}
 
+	@Override
+	protected synchronized void clientDisconnected(ConnectionToClient client) {
+		GameInfo game = findGame(client);
+		game.stopGame();
+		gameList.remove(game);
+		System.out.println("Client Disconnected");
+	}
+	
+	
+	
 	protected void clientConnected(ConnectionToClient client) 
 	{
 		System.out.println("Client Connected");

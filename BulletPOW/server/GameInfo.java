@@ -40,14 +40,12 @@ public class GameInfo {
 		this.gameName = gameName;
 
 		//Game Objects
-		guest = new Player();
-		host = new Player();
-		guestBullets = new Bullets();
-		hostBullets = new Bullets();
+		this.guest = new Player(0, 0, 0, 0);
+		this.host = new Player(0,0,0,0);
 
 		
 		
-		timer = new Timer(1000/120, new ActionListener() {
+		timer = new Timer(1000/70, new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {

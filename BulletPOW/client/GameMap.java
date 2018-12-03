@@ -21,6 +21,8 @@ public class GameMap extends JPanel
 	Player opponent;
 	Bullets my_bullet;
 	Bullets opponent_bullet;
+	
+	GameControl gc;
 
 
 	// timer creation
@@ -44,7 +46,8 @@ public class GameMap extends JPanel
 	public GameMap(GameControl gc)
 	{
 
-
+		this.gc = gc;
+		
 		setBackground(Color.BLACK);
 
 		// instantiate players/bullets
@@ -58,20 +61,16 @@ public class GameMap extends JPanel
 		
 		// instantiates timer for refresh purposes - changing 60 to smaller number means
 		// slower, choppier movement
-		timer = new Timer(1000 / 60, new ActionListener()
+		timer = new Timer(1000/60, new ActionListener()
 		{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				gc.update();
 				repaint();
 			}
 		});
 	}
 
-
-	// this is called in the timer by repaint() to constantly be repainting the
-	// panel when a change occurs
 	@Override
 	protected void paintComponent(Graphics g)
 	{
@@ -79,6 +78,7 @@ public class GameMap extends JPanel
 		super.paintComponent(g);
 
 		//TODO paint game info
+		gc.paintObjects(g);
 
 	}
 

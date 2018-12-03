@@ -8,11 +8,17 @@ public class GameActionData implements Serializable{
 	
 	private Player player;
 	private Bullets bullet;
+	private int px;
+	private int py;
 	
 	public GameActionData(Player player, Bullets bullet) 
 	{
 		this.player = player;
 		this.bullet = bullet;
+		
+		
+		px = player.getX();
+		py = player.getY();
 	}
 
 	public Player getPlayer() 

@@ -10,7 +10,8 @@ public enum ServerMessage {
 	GameAlreadyInPlay("This game is already in play"),
 	GameListUpdate,
 	HostGame,
-	JoinGameSuccess("Player has joined a game");
+	JoinGameSuccess("Player has joined a game"),
+	HostGameSuccess("Player has hosted a game");
 	
 	
 	private String message;

@@ -13,31 +13,25 @@ public class Player implements Serializable{
 	private int x, y;
 	private int xbound, ybound;
 	
-	private Image graphicImage;
-	private BufferedImage graphic;
 
 	
 	
-	public Player(BufferedImage graphic, int x, int y)
+	public Player(int x, int y, int xbound, int ybound)
 	{
 		health = 5;
-		speed = 1;
+		speed = 5;
 		damage = 1;
 		this.x = x;
 		this.y = y;
 		
-		xbound = graphic.getWidth();
-		ybound = graphic.getHeight();
-		
-		graphicImage = graphic.getScaledInstance(graphic.getWidth(), graphic.getHeight(), Image.SCALE_SMOOTH);
+		this.xbound = xbound;
+		this.ybound = ybound;
 	}
 	
-	//TODO Graphics
-	public Image getGraphic() 
-	{
-		return graphicImage;
-	}
+
 	
+	public int getXBound() {return xbound;}
+	public int getYBound() {return ybound;}
 	
 	public int getX()
 	{
