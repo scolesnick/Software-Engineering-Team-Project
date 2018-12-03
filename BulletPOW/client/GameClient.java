@@ -102,8 +102,8 @@ public class GameClient extends AbstractClient
 		//TODO Add Game Functionality
 		else if (msg instanceof GameActionData) 
 		{
-			gameController.setOpponent(((GameActionData) msg).getPlayer());
-			gameController.setOpponent_bullets(((GameActionData) msg).getBullet());
+			gameController.getOpponent().setX(((GameActionData) msg).getPx());
+			gameController.getOpponent().setY(((GameActionData) msg).getPy());
 			gameController.update();
 		}
 		else if (msg instanceof ServerMessage)

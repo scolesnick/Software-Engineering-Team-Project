@@ -6,14 +6,11 @@ import gameMechanics.*;
 
 public class GameActionData implements Serializable{
 	
-	private Player player;
 	private Bullets bullet;
-	private int px;
-	private int py;
+	private int px, py;
 	
 	public GameActionData(Player player, Bullets bullet) 
 	{
-		this.player = player;
 		this.bullet = bullet;
 		
 		
@@ -21,23 +18,19 @@ public class GameActionData implements Serializable{
 		py = player.getY();
 	}
 
-	public Player getPlayer() 
-	{
-		return player;
+	public int getPx() {
+		return px;
 	}
 
-	public void setPlayer(Player player) 
-	{
-		this.player = player;
+	public void setPx(int px) {
+		this.px = px;
 	}
 
-	public Bullets getBullet() 
-	{
-		return bullet;
+	public int getPy() {
+		return py;
 	}
 
-	public void setBullet(Bullets bullet) 
-	{
-		this.bullet = bullet;
+	public void setPy(int py) {
+		this.py = py;
 	}
-}
+ }

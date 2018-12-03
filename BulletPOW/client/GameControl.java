@@ -51,10 +51,12 @@ public class GameControl implements ActionListener, MouseListener {
 				opponentImage = image.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
 				playerImage = image2.getScaledInstance(image2.getWidth(), image2.getHeight(), Image.SCALE_SMOOTH);
 				player = new Player(400, 300, image2.getWidth(), image2.getHeight());
+				opponent = new Player(100, 300, image.getWidth(), image.getHeight());
 				break;
 			case HostGameSuccess:
 				playerImage = image.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
 				opponentImage = image2.getScaledInstance(image2.getWidth(), image2.getHeight(), Image.SCALE_SMOOTH);
+				opponent = new Player(400, 300, image2.getWidth(), image2.getHeight());
 				player = new Player(100, 300, image.getWidth(), image.getHeight());
 				break;
 			default:
@@ -100,7 +102,6 @@ public class GameControl implements ActionListener, MouseListener {
 		move();
 		try {
 			GameActionData data = new GameActionData(player, player_bullets);
-			System.out.println(data.getPlayer().getX() + ", " + data.getPlayer().getY());
 			client.sendToServer(data);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

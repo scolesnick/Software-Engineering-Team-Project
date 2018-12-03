@@ -66,16 +66,13 @@ public class GameServer extends AbstractServer
 				
 				if(game != null && game.getHostID() == client.getId()) 
 				{
-					game.setHost(((GameActionData) msg).getPlayer());
-					game.setHostBullets(((GameActionData) msg).getBullet());
-					
-					System.out.println("Data received: " + ((GameActionData) msg).getPlayer().getX() + ", " + ((GameActionData) msg).getPlayer().getY());
-					System.out.println("Host at: " + game.getHost().getX() + ", " + game.getHost().getY());
+					game.getHost().setX(((GameActionData) msg).getPx());
+					game.getHost().setY(((GameActionData) msg).getPy());	
 				}
 				else if (game != null && game.getGuestID() == client.getId()) 
 				{
-					game.setGuest(((GameActionData) msg).getPlayer());
-					game.setGuestBullets(((GameActionData) msg).getBullet());
+					game.getGuest().setX(((GameActionData) msg).getPx());
+					game.getGuest().setY(((GameActionData) msg).getPy());
 				}
 				
 			}
