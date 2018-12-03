@@ -3,103 +3,156 @@ package server;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.Timer;
 
 import gameMechanics.*;
+import messageData.BulletData;
 import messageData.GameActionData;
 import ocsf.server.ConnectionToClient;
 
 public class GameInfo {
 
-	
+
 	private ConnectionToClient hostClient;
 	private ConnectionToClient guestClient;
-	
+
 	private Player guest;
 	private Player host;
+	private ArrayList<Bullet> hostBullets;
+	private ArrayList<Bullet> guestBullets;
+
 	private Long guestID;
 	private Long hostID;
 	private String gameName;
-	private Bullets guestBullets;
-	private Bullets hostBullets;
 	private Timer timer;
-	
+
+	//Server hosted bounds of the game map
+	public static final int xBounds = 720, yBounds = 690;
+
+
 	public GameInfo(String gameName, ConnectionToClient client) 
 	{
-		
+
 		//Host info
 		this.hostClient = client;
 		this.hostID = hostClient.getId();
-		
+
 		//Guest Info
 		guestID = null;
 		guestClient = null;
-		
+
 		//Game Info
 		this.gameName = gameName;
 
 		//Game Objects
-		this.guest = new Player(0, 0, 0, 0);
-		this.host = new Player(0,0,0,0);
+		this.guest = new Player(0, 0, 40, 40);
+		this.host = new Player(0,0,40,40);
 
-		
-		
-		timer = new Timer(1000/70, new ActionListener() {
-			
+		this.guestBullets = new ArrayList<>();
+		this.hostBullets = new ArrayList<>();
+
+
+
+		timer = new Timer(1000/60, new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					hostClient.sendToClient(new GameActionData(guest, guestBullets));
-					guestClient.sendToClient(new GameActionData(host, hostBullets));
+
+					Iterator<Bullet> it;
+					//Host Bullet Updates
+					
+					it = hostBullets.iterator();
+					while(it.hasNext()) 
+					{
+						Bullet b = it.next();
+						if(moveBullet(b)) 
+						{
+							//Check Collision for both players
+							if(checkCollision(b, host)) 
+							{
+								host.setHealth(host.getHealth() - b.getDamage());
+								it.remove();
+								if(host.getHealth() < 0) {/*TODO Guest Winner*/}
+							}
+							else if(checkCollision(b, guest)) 
+							{
+								guest.setHealth(guest.getHealth() - b.getDamage());
+								it.remove();
+								if(guest.getHealth() < 0) {/*TODO Host Winner*/}
+							}
+						}
+						else 
+						{
+							it.remove();
+						}
+					}
+
+
+					it = guestBullets.iterator();
+					while(it.hasNext()) 
+					{
+						Bullet b = it.next();
+						if(moveBullet(b)) 
+						{
+							//Check Collision for both players
+							if(checkCollision(b, host)) 
+							{
+								host.setHealth(host.getHealth() - b.getDamage());
+								it.remove();
+								if(host.getHealth() < 0) {/*TODO Guest Winner*/}
+							}
+							else if(checkCollision(b, guest)) 
+							{
+								guest.setHealth(guest.getHealth() - b.getDamage());
+								it.remove();
+								if(guest.getHealth() < 0) {/*TODO Host Winner*/}
+							}
+						}
+						else 
+						{
+							it.remove();
+						}
+					}
+
+					BulletData bulletData = new BulletData(hostBullets, guestBullets);
+					hostClient.sendToClient(bulletData);
+					guestClient.sendToClient(bulletData);
+					
+					hostClient.sendToClient(new GameActionData(guest));
+					guestClient.sendToClient(new GameActionData(host));
+					
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
 	}
-	
+
 	public void startGame() {
-	
+
 		if(guestClient != null && hostClient != null)
 		{
 			timer.start();
 		}	
 	}
-	
+
 	public void stopGame() {timer.stop();}
 
-	public Bullets getGuestBullets() 
-	{
-		return guestBullets;
-	}
 
-	public void setGuestBullets(Bullets guestBullets) 
-	{
-		this.guestBullets = guestBullets;
-	}
-
-	public Bullets getHostBullets() 
-	{
-		return hostBullets;
-	}
-
-	public void setHostBullets(Bullets hostBullets) 
-	{
-		this.hostBullets = hostBullets;
-	}
-	
 	public String getGameName() 
 	{
 		return gameName;
 	}
-	
+
 	public void setGameName(String gameName) 
 	{
 		this.gameName = gameName;
 	}
-	
+
 	public Player getGuest() 
 	{
 		return guest;
@@ -143,6 +196,44 @@ public class GameInfo {
 	public void setGuest(ConnectionToClient client) {
 		this.guestClient = client;
 		this.guestID = client.getId();
-		
+
+	}
+
+	public void newBullet(int mouseX, int mouseY, ConnectionToClient client) 
+	{
+		if(client.equals(hostClient)) 
+		{
+			Bullet b = new Bullet(host.getX(), host.getY());
+			b.setVelocity(mouseY, mouseX);
+			hostBullets.add(b);
+
+		}
+		else if(client.equals(guestClient)) 
+		{
+			Bullet b = new Bullet(guest.getX(), guest.getY());
+			b.setVelocity(mouseY, mouseX);
+			guestBullets.add(b);
+		}
+	}
+
+	public boolean moveBullet(Bullet b) 
+	{
+		int nextX = b.nextX(), nextY = b.nextY();
+
+		if(nextX < 0 || nextX > xBounds || nextY < 0 || nextY > yBounds) 
+		{
+			return false;
+		}
+		else 
+		{
+			b.step();
+			return true;
+		}
+	}
+
+	public boolean checkCollision(Bullet b, Player p) 
+	{
+		if(b.getX() > p.getX() && b.getX() < p.getXBound() && b.getY() > p.getY() && b.getY() < p.getYBound()) {return true;}
+		else {return false;}
 	}
 }

@@ -1,6 +1,9 @@
 package client;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import gameMechanics.Bullet;
 import messageData.*;
 import ocsf.client.AbstractClient;
 import server.ServerMessage;
@@ -105,6 +108,11 @@ public class GameClient extends AbstractClient
 			gameController.getOpponent().setX(((GameActionData) msg).getPx());
 			gameController.getOpponent().setY(((GameActionData) msg).getPy());
 			gameController.update();
+		}
+		else if (msg instanceof BulletData) 
+		{
+			gameController.setHostBullets(((BulletData) msg).getHostBulletCords());
+			gameController.setGuestBullets(((BulletData) msg).getGuestBulletCords());
 		}
 		else if (msg instanceof ServerMessage)
 		{

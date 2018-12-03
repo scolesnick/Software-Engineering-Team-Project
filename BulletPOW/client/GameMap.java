@@ -15,15 +15,8 @@ import gameMechanics.*;
 
 public class GameMap extends JPanel
 {
-
-	
-	Player me;
-	Player opponent;
-	Bullets my_bullet;
-	Bullets opponent_bullet;
 	
 	GameControl gc;
-
 
 	// timer creation
 	private Timer timer;
@@ -49,12 +42,6 @@ public class GameMap extends JPanel
 		this.gc = gc;
 		
 		setBackground(Color.BLACK);
-
-		// instantiate players/bullets
-		me = gc.getPlayer();
-		opponent = gc.getOpponent();
-		my_bullet = gc.getPlayer_bullets();
-		opponent_bullet = gc.getOpponent_bullets();
 	
 
 		addMouseListener(gc);

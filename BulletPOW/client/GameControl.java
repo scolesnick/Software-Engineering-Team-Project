@@ -3,6 +3,7 @@ package client;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import messageData.GameActionData;
+import messageData.MouseClickData;
 import server.ServerMessage;
 import gameMechanics.*;
 import java.awt.CardLayout;
@@ -14,6 +15,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class GameControl implements ActionListener, MouseListener {
 	private JPanel container;
@@ -27,14 +29,18 @@ public class GameControl implements ActionListener, MouseListener {
 	// GameMap objects
 	private Player player;
 	private Player opponent;
-	private Bullets player_bullets = new Bullets();
-	private Bullets opponent_bullets = new Bullets();
+//	private ArrayList<Bullet> hostBullets;
+//	private ArrayList<Bullet> guestBullets;
+	int[][] hostBullets;
+	int[][] guestBullets;
 	GameMap gameMap;
 
 	// GameMap functionality
 	private boolean dPressed, aPressed, sPressed, wPressed;
 
 	public GameControl(JPanel container, GameClient client) {
+		hostBullets = new int[0][2];
+		guestBullets = new int[0][2];
 		this.client = client;
 		this.container = container;
 
@@ -51,12 +57,12 @@ public class GameControl implements ActionListener, MouseListener {
 				opponentImage = image.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
 				playerImage = image2.getScaledInstance(image2.getWidth(), image2.getHeight(), Image.SCALE_SMOOTH);
 				player = new Player(400, 300, image2.getWidth(), image2.getHeight());
-				opponent = new Player(100, 300, image.getWidth(), image.getHeight());
+				opponent = new Player(-100, -100, image.getWidth(), image.getHeight());
 				break;
 			case HostGameSuccess:
 				playerImage = image.getScaledInstance(image.getWidth(), image.getHeight(), Image.SCALE_SMOOTH);
 				opponentImage = image2.getScaledInstance(image2.getWidth(), image2.getHeight(), Image.SCALE_SMOOTH);
-				opponent = new Player(400, 300, image2.getWidth(), image2.getHeight());
+				opponent = new Player(-100, -100, image2.getWidth(), image2.getHeight());
 				player = new Player(100, 300, image.getWidth(), image.getHeight());
 				break;
 			default:
@@ -97,11 +103,11 @@ public class GameControl implements ActionListener, MouseListener {
 		cLayout.show(container, "game");
 	}
 
-	// TODO update positions and send data to server
+	// TODO update positions and send data to server - bullets
 	public void update() {
 		move();
 		try {
-			GameActionData data = new GameActionData(player, player_bullets);
+			GameActionData data = new GameActionData(player);
 			client.sendToServer(data);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -117,22 +123,25 @@ public class GameControl implements ActionListener, MouseListener {
 		if (opponent != null)
 			g.drawImage(opponentImage, opponent.getX(), opponent.getY(), gameMap);
 
-		// Draw any bullets if they're active
-//		if (player_bullets.getFly())
-//		{
-//			Rectangle bullet = player_bullets.getBox();
-//			g.setColor(Color.CYAN);
-//			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
-//			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-//		}
-//		if (opponent_bullets.getFly())
-//		{
-//			Rectangle bullet = opponent_bullets.getBox();
-//			g.setColor(Color.RED);
-//			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
-//			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-//		}
+		
+		//Draw all the bullets
+		g.setColor(Color.RED);
+		for(int i = 0; i < hostBullets.length; i++) 
+		{
+			Rectangle bullet = new Rectangle(hostBullets[i][0], hostBullets[i][1], 8, 8);
 
+			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
+			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+		}
+		
+		g.setColor(Color.CYAN);
+		for(int i = 0; i < guestBullets.length; i++) 
+		{
+			Rectangle bullet = new Rectangle(guestBullets[i][0], guestBullets[i][1], 8, 8);
+
+			g.drawRect(bullet.x, bullet.y, bullet.width, bullet.height);
+			g.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+		}
 	}
 
 	public void move() {
@@ -158,6 +167,16 @@ public class GameControl implements ActionListener, MouseListener {
 			}
 		}
 	}
+	
+	public void setHostBullets(int[][] bullets) 
+	{
+		hostBullets = bullets;
+	}
+	
+	public void setGuestBullets(int[][] bullets) 
+	{
+		guestBullets = bullets;
+	}
 
 	public Player getPlayer() {
 		return player;
@@ -175,57 +194,27 @@ public class GameControl implements ActionListener, MouseListener {
 		this.opponent = opponent;
 	}
 
-	public Bullets getPlayer_bullets() {
-		return player_bullets;
-	}
-
-	public void setPlayer_bullets(Bullets player_bullets) {
-		this.player_bullets = player_bullets;
-	}
-
-	public Bullets getOpponent_bullets() {
-		return opponent_bullets;
-	}
-
-	public void setOpponent_bullets(Bullets opponent_bullets) {
-		this.opponent_bullets = opponent_bullets;
-	}
+	@Override
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		player_bullets = new Bullets();
-		player_bullets.setX(player.getX() + 18);
-		player_bullets.setY(player.getY() + 15);
-		player_bullets.setBox();
-		player_bullets.setFly(true);
-
-		player_bullets.setVelocity(e.getX(), e.getY());
+		try {
+			client.sendToServer(new MouseClickData(e.getX(), e.getY()));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	// reusable method for adding keybinds in a dynamic way
 	public void addOneKeyBinding(JComponent comp, int keyCode, boolean bool, String id, ActionListener AL) {

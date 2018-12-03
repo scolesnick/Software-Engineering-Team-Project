@@ -1,19 +1,16 @@
 package messageData;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import gameMechanics.*;
 
 public class GameActionData implements Serializable{
 	
-	private Bullets bullet;
 	private int px, py;
 	
-	public GameActionData(Player player, Bullets bullet) 
+	public GameActionData(Player player) 
 	{
-		this.bullet = bullet;
-		
-		
 		px = player.getX();
 		py = player.getY();
 	}

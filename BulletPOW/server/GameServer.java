@@ -1,4 +1,4 @@
-package server;
+	package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,6 +75,11 @@ public class GameServer extends AbstractServer
 					game.getGuest().setY(((GameActionData) msg).getPy());
 				}
 				
+			}
+			else if(msg instanceof MouseClickData) 
+			{
+				GameInfo game = findGame(client);
+				game.newBullet(((MouseClickData) msg).getMouseX(), ((MouseClickData) msg).getMouseY(), client);
 			}
 			else if(msg instanceof ServerMessage) 
 			{
