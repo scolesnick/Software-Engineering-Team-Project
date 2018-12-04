@@ -23,6 +23,11 @@ public class GameClient extends AbstractClient
 		super(host, port);
 		openConnection();
 	}
+	
+	public GameClient() 
+	{
+		super("localhost", 8080);
+	}
 
 	public void displayLoginPanel()
 	{
