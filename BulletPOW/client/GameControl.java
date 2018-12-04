@@ -210,7 +210,10 @@ public class GameControl implements ActionListener, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		try {
-			client.sendToServer(new MouseClickData(e.getX(), e.getY()));
+			MouseClickData data = new MouseClickData(e.getX(), e.getY());
+			
+			
+			client.sendToServer(data);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

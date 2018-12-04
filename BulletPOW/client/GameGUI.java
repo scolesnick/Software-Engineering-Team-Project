@@ -58,7 +58,7 @@ public class GameGUI extends JFrame
 		container.add(game, "game");
 
 		// Show the initial view in the card layout.
-		cardLayout.show(container, "menu");
+		cardLayout.show(container, "login");
 
 		// Add the card layout container to the JFrame.
 		this.add(container, BorderLayout.CENTER);

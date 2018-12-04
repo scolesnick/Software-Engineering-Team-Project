@@ -136,6 +136,14 @@ public class GameInfo {
 		if(guestClient != null && hostClient != null)
 		{
 			timer.start();
+			try
+			{
+				hostClient.sendToClient(ServerMessage.StartGame);
+				guestClient.sendToClient(ServerMessage.StartGame);
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}	
 	}
 

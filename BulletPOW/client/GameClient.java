@@ -136,6 +136,8 @@ public class GameClient extends AbstractClient
 				gameController.initialize((ServerMessage)msg);
 				gameController.displayGamePanel();
 				break;
+			case StartGame:
+				gameController.updateStatus(((ServerMessage)msg).getMessage());
 			case GameWon:
 			case GameLost:
 				gameController.updateStatus(((ServerMessage) msg).getMessage());
