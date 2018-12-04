@@ -64,25 +64,25 @@ public class GameInfo {
 
 					Iterator<Bullet> it;
 					//Host Bullet Updates
-					
 					it = hostBullets.iterator();
 					while(it.hasNext()) 
 					{
 						Bullet b = it.next();
 						if(moveBullet(b)) 
 						{
-							//Check Collision for both players
-							if(checkCollision(b, host)) 
+							//Check Collision for guest players
+							if(checkCollision(b, guest)) 
 							{
-								host.setHealth(host.getHealth() - b.getDamage());
-								it.remove();
-								if(host.getHealth() < 0) {/*TODO Guest Winner*/}
-							}
-							else if(checkCollision(b, guest)) 
-							{
+
+								System.out.println("oof");
 								guest.setHealth(guest.getHealth() - b.getDamage());
 								it.remove();
-								if(guest.getHealth() < 0) {/*TODO Host Winner*/}
+								if(guest.getHealth() < 0) 
+								{
+									guestClient.sendToClient(ServerMessage.GameLost);
+									hostClient.sendToClient(ServerMessage.GameWon);
+									stopGame();
+								}
 							}
 						}
 						else 
@@ -103,13 +103,12 @@ public class GameInfo {
 							{
 								host.setHealth(host.getHealth() - b.getDamage());
 								it.remove();
-								if(host.getHealth() < 0) {/*TODO Guest Winner*/}
-							}
-							else if(checkCollision(b, guest)) 
-							{
-								guest.setHealth(guest.getHealth() - b.getDamage());
-								it.remove();
-								if(guest.getHealth() < 0) {/*TODO Host Winner*/}
+								if(host.getHealth() < 0) 
+								{
+									guestClient.sendToClient(ServerMessage.GameWon);
+									hostClient.sendToClient(ServerMessage.GameLost);
+									stopGame();	
+								}
 							}
 						}
 						else 
@@ -233,7 +232,13 @@ public class GameInfo {
 
 	public boolean checkCollision(Bullet b, Player p) 
 	{
-		if(b.getX() > p.getX() && b.getX() < p.getXBound() && b.getY() > p.getY() && b.getY() < p.getYBound()) {return true;}
+		int xbound = p.getX() + p.getXBound();
+		int ybound = p.getY() + p.getYBound();
+		int bulletxbound = b.getX() + 8;
+		int bulletybound = b.getY() + 8;
+		
+		if(b.getX() >= p.getX() && b.getX() <= xbound && b.getY() >= p.getY() && b.getY() <= ybound) {return true;}
+		else if(bulletxbound >= p.getX() && bulletxbound <= xbound && bulletybound >= p.getY() && bulletybound <= ybound) {return true;}
 		else {return false;}
 	}
 }

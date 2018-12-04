@@ -11,7 +11,11 @@ public enum ServerMessage {
 	GameListUpdate,
 	HostGame,
 	JoinGameSuccess("Player has joined a game"),
-	HostGameSuccess("Player has hosted a game");
+	HostGameSuccess("Player has hosted a game"),
+	GameWon("You have won the game!"),
+	GameLost("You have lost the game!"),
+	StartGame("Game has started!"),
+	StopGame("");
 	
 	
 	private String message;

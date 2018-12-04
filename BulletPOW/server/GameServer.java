@@ -138,6 +138,15 @@ public class GameServer extends AbstractServer
 	}
 	
 	
+	@Override
+	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
+		GameInfo game = findGame(client);
+		game.stopGame();
+		gameList.remove(game);
+		System.out.println("Client Disconnected");
+	}
+	
+	
 	
 	protected void clientConnected(ConnectionToClient client) 
 	{

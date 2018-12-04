@@ -47,6 +47,9 @@ public class GameControl implements ActionListener, MouseListener {
 	}
 
 	public void initialize(ServerMessage msg) {
+		
+		hostBullets = new int[0][2];
+		guestBullets = new int[0][2];
 		try {
 			BufferedImage image = ImageIO.read(new File("steve.jpg"));
 			BufferedImage image2 = ImageIO.read(new File("creeper.jpg"));
@@ -71,6 +74,7 @@ public class GameControl implements ActionListener, MouseListener {
 			
 
 			addAllKeyBindings();
+			
 			gameMap.startGame();
 		} catch (IOException e) {
 		}
@@ -207,7 +211,7 @@ public class GameControl implements ActionListener, MouseListener {
 	public void mousePressed(MouseEvent e) {
 		try {
 			client.sendToServer(new MouseClickData(e.getX(), e.getY()));
-		} catch (IOException e1) {
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 
