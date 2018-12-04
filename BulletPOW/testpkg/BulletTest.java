@@ -1,8 +1,10 @@
-package gameMechanics;
+package testpkg;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import gameMechanics.Bullet;
 
 public class BulletTest
 {
