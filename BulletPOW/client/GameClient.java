@@ -144,6 +144,11 @@ public class GameClient extends AbstractClient
 				break;
 			}
 		}
+		
+		else
+		{
+			System.out.println(msg);
+		}
 	}
 
 	@Override
