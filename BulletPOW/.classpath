@@ -2,7 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Nick/Documents/Fall2018/Software_Eng/labs/mysql-connector-java-5.1.40-bin.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Nick/Documents/Fall2018/Software_Eng/labs/ocsf.jar"/>
+	<classpathentry kind="lib" path="D:/uTorrent/Classes/3rd Year/1st Semester/Java/WorkSpaces/networkTesting/dudeLab7Out/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="D:/uTorrent/Classes/3rd Year/1st Semester/Java/WorkSpaces/networkTesting/dudeLab7Out/ocsf.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
