@@ -9,6 +9,7 @@ import java.util.Iterator;
 import javax.swing.Timer;
 
 import gameMechanics.*;
+import messageData.BuffData;
 import messageData.BulletData;
 import messageData.GameActionData;
 import ocsf.server.ConnectionToClient;
@@ -23,11 +24,13 @@ public class GameInfo {
 	private Player host;
 	private ArrayList<Bullet> hostBullets;
 	private ArrayList<Bullet> guestBullets;
+	private Buffs buff;
 
 	private Long guestID;
 	private Long hostID;
 	private String gameName;
 	private Timer timer;
+	private long looper;
 
 	//Server hosted bounds of the game map
 	public static final int xBounds = 720, yBounds = 690;
@@ -54,14 +57,13 @@ public class GameInfo {
 		this.guestBullets = new ArrayList<>();
 		this.hostBullets = new ArrayList<>();
 
-
+		looper = 0;
 
 		timer = new Timer(1000/60, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-
+				try {					
 					Iterator<Bullet> it;
 					//Host Bullet Updates
 					it = hostBullets.iterator();
@@ -115,6 +117,20 @@ public class GameInfo {
 						{
 							it.remove();
 						}
+					}
+					
+					if(looper == 60*10 || looper == 0)
+						looper = 0;
+					else
+						looper++;
+					if(looper == 0)
+					{
+						buff = new Buffs();
+						buff.createBuff();
+						BuffData buffData = new BuffData(buff.getX(),buff.getY(),buff.getBuffType());
+						hostClient.sendToClient(buffData);
+						guestClient.sendToClient(buffData);
+						looper++;
 					}
 
 					BulletData bulletData = new BulletData(hostBullets, guestBullets);

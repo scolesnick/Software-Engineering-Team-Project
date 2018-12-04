@@ -72,6 +72,18 @@ public class Buffs
 		return y;
 	}
 	
+	public void setX(int x)
+	{
+		this.x = x;
+	}
+	public void setY()
+	{
+		this.y = y;
+	}
+	public void setType(int type)
+	{
+		this.buffType = type;
+	}
 	public Rectangle getBox()
 	{
 		return box;

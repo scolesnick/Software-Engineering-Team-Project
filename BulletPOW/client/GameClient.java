@@ -114,6 +114,11 @@ public class GameClient extends AbstractClient
 			gameController.setHostBullets(((BulletData) msg).getHostBulletCords());
 			gameController.setGuestBullets(((BulletData) msg).getGuestBulletCords());
 		}
+		else if(msg instanceof BuffData)
+		{
+			BuffData details = ((BuffData) msg);
+			gameController.setBuff(details.getX(), details.getY(), details.getType());
+		}
 		else if (msg instanceof ServerMessage)
 		{
 			switch ((ServerMessage) msg)

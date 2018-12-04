@@ -29,8 +29,7 @@ public class GameControl implements ActionListener, MouseListener {
 	// GameMap objects
 	private Player player;
 	private Player opponent;
-//	private ArrayList<Bullet> hostBullets;
-//	private ArrayList<Bullet> guestBullets;
+	private Buffs buff;
 	int[][] hostBullets;
 	int[][] guestBullets;
 	GameMap gameMap;
@@ -44,6 +43,14 @@ public class GameControl implements ActionListener, MouseListener {
 		this.client = client;
 		this.container = container;
 
+	}
+	
+	public void setBuff(int x, int y, int type)
+	{
+		buff = new Buffs();
+		buff.setX(x);
+		buff.setY();
+		buff.setType(type);
 	}
 
 	public void initialize(ServerMessage msg) {
@@ -127,6 +134,14 @@ public class GameControl implements ActionListener, MouseListener {
 		if (opponent != null)
 			g.drawImage(opponentImage, opponent.getX(), opponent.getY(), gameMap);
 
+		// Draw buff if exists
+		g.setColor(Color.ORANGE);
+		if (buff != null)
+		{
+			Rectangle a_buff = new Rectangle(buff.getX(), buff.getY(), 15, 15);
+			g.drawRect(buff.getX(), buff.getY(), 15, 15);
+			g.fillRect(buff.getX(), buff.getY(), 15, 15);
+		}
 		
 		//Draw all the bullets
 		g.setColor(Color.RED);
