@@ -1,4 +1,4 @@
-package server;
+	package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,13 +50,15 @@ public class GameServer extends AbstractServer
 				
 				if(game.getGuestID() == null) 
 				{
-					game.setGuestID(client.getId());
-					client.sendToClient(new JoinGameData(new GameActionData(game.getHost(), game.getHostBullets())));
+					game.setGuest(client);
+					client.sendToClient(ServerMessage.JoinGameSuccess);
+					game.startGame();
 				}
 				else 
 				{
 					client.sendToClient(ServerMessage.GameAlreadyInPlay);
 				}
+				
 			}
 			else if (msg instanceof GameActionData) 
 			{
@@ -64,35 +66,34 @@ public class GameServer extends AbstractServer
 				
 				if(game != null && game.getHostID() == client.getId()) 
 				{
-					game.setHost(((GameActionData) msg).getPlayer());
-					game.setHostBullets(((GameActionData) msg).getBullet());
+					game.getHost().setX(((GameActionData) msg).getPx());
+					game.getHost().setY(((GameActionData) msg).getPy());	
 				}
 				else if (game != null && game.getGuestID() == client.getId()) 
 				{
-					game.setGuest(((GameActionData) msg).getPlayer());
-					game.setGuestBullets(((GameActionData) msg).getBullet());
+					game.getGuest().setX(((GameActionData) msg).getPx());
+					game.getGuest().setY(((GameActionData) msg).getPy());
 				}
+				
+			}
+			else if(msg instanceof MouseClickData) 
+			{
+				GameInfo game = findGame(client);
+				game.newBullet(((MouseClickData) msg).getMouseX(), ((MouseClickData) msg).getMouseY(), client);
 			}
 			else if(msg instanceof ServerMessage) 
 			{
 				switch ((ServerMessage)msg) {
+				//Calls for when client requests a list of games
 				case GameListUpdate:
-					client.sendToClient(new JoinGameData(gameList));
-					break;
-				case GameUpdate:
-					GameInfo game = findGame(client);
-					if(game != null && game.getHostID() == client.getId()) 
-					{
-						client.sendToClient(new GameActionData(game.getGuest(), game.getGuestBullets()));
-					}
-					else if (game != null && game.getGuestID() == client.getId()) 
-					{
-						client.sendToClient(new GameActionData(game.getHost(), game.getHostBullets()));
-					}
+					ArrayList<String> gameNameList = new ArrayList<>();
+					for(GameInfo g : gameList) {gameNameList.add(g.getGameName());}
+					client.sendToClient(new JoinGameData(gameNameList));
 					break;
 				case HostGame:
-					GameInfo newGame = new GameInfo(client.getName(), client.getId());
+					GameInfo newGame = new GameInfo(client.getName(), client);
 					gameList.add(newGame);
+					client.sendToClient(ServerMessage.HostGameSuccess);
 					break;
 				default:
 					break;
@@ -128,6 +129,25 @@ public class GameServer extends AbstractServer
 		System.out.println("Server and clients are closed - Press Listen to Restart");
 	}
 
+	@Override
+	protected synchronized void clientDisconnected(ConnectionToClient client) {
+		GameInfo game = findGame(client);
+		game.stopGame();
+		gameList.remove(game);
+		System.out.println("Client Disconnected");
+	}
+	
+	
+	@Override
+	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
+		GameInfo game = findGame(client);
+		game.stopGame();
+		gameList.remove(game);
+		System.out.println("Client Disconnected");
+	}
+	
+	
+	
 	protected void clientConnected(ConnectionToClient client) 
 	{
 		System.out.println("Client Connected");

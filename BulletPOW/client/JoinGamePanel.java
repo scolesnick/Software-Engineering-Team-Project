@@ -12,6 +12,7 @@ public class JoinGamePanel extends JPanel
 
 	public void updateGameList(ArrayList<String> gameList)
 	{
+		listModel.removeAllElements();
 		for (String gameName : gameList)
 		{
 			listModel.addElement(gameName);

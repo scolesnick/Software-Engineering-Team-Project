@@ -1,6 +1,9 @@
 package client;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import gameMechanics.Bullet;
 import messageData.*;
 import ocsf.client.AbstractClient;
 import server.ServerMessage;
@@ -97,20 +100,20 @@ public class GameClient extends AbstractClient
 
 		else if (msg instanceof JoinGameData)
 		{
-			switch (((JoinGameData) msg).getMessageType())
-			{
-			case JoinGame:
-				this.displayGamePanel();
-				//TODO
-				break;
-			case GameListUpdate:
-				joinController.updateGameList(((JoinGameData) msg).getGameList());
-				break;
-			default:
-				break;
-			}
+			joinController.updateGameList(((JoinGameData) msg).getGameList());
 		}
 		//TODO Add Game Functionality
+		else if (msg instanceof GameActionData) 
+		{
+			gameController.getOpponent().setX(((GameActionData) msg).getPx());
+			gameController.getOpponent().setY(((GameActionData) msg).getPy());
+			gameController.update();
+		}
+		else if (msg instanceof BulletData) 
+		{
+			gameController.setHostBullets(((BulletData) msg).getHostBulletCords());
+			gameController.setGuestBullets(((BulletData) msg).getGuestBulletCords());
+		}
 		else if (msg instanceof ServerMessage)
 		{
 			switch ((ServerMessage) msg)
@@ -128,10 +131,25 @@ public class GameClient extends AbstractClient
 				createController.displayError(((ServerMessage) msg).getMessage());
 				loginController.displayError(((ServerMessage) msg).getMessage());
 				break;
+			case JoinGameSuccess:
+			case HostGameSuccess:
+				gameController.initialize((ServerMessage)msg);
+				gameController.displayGamePanel();
+				break;
+			case StartGame:
+				gameController.updateStatus(((ServerMessage)msg).getMessage());
+			case GameWon:
+			case GameLost:
+				gameController.updateStatus(((ServerMessage) msg).getMessage());
 			default:
 				System.out.println(((ServerMessage) msg).getMessage());
 				break;
 			}
+		}
+		
+		else
+		{
+			System.out.println(msg);
 		}
 	}
 
