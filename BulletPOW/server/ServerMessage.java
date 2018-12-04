@@ -15,7 +15,7 @@ public enum ServerMessage {
 	GameWon("You have won the game!"),
 	GameLost("You have lost the game!"),
 	StartGame("Game has started!"),
-	StopGame("");
+	StopGame("Game has stopped!");
 	
 	
 	private String message;
